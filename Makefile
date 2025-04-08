@@ -8,4 +8,7 @@ build:
 	cd frontend && npm run build
 
 lint:
-	npx eslint --ext js,jsx --no-eslintrc --config .eslintrc.yml .
+	npx eslint .
+
+fix:
+	npx eslint --fix .
