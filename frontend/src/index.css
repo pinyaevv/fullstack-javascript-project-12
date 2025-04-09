@@ -54,6 +54,15 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.channel-list {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.message-box {
+  height: 70vh;
+  overflow-y: auto;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

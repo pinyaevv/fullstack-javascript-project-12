@@ -18,7 +18,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const hanleSubmit = async (values) => {
+  const handleSubmit = async (values) => {
     console.log('Отправка данных:', values);
     try {
       const token = await login(values.username, values.password);
@@ -38,7 +38,7 @@ export default function LoginPage() {
       <Formik
         initialValues={{ username: '', password: '' }}
         validationSchema={LoginSchema}
-        onSubmit={hanleSubmit}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
