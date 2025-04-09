@@ -3,7 +3,9 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { login } from '../api/auth.js';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Alert } from 'react-bootstrap';
+import { setCredentials } from '../app/features/auth/authSlice.js';
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -17,14 +19,16 @@ const LoginSchema = Yup.object().shape({
 export default function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values) => {
     console.log('Отправка данных:', values);
     try {
       const token = await login(values.username, values.password);
       console.log('Полученный токен:', token);
+      dispatch(setCredentials({ token }));
       localStorage.setItem('token', token);
-      navigate('/');
+      navigate('/', { replace: true });
     } catch (err) {
       console.error('Полная ошибка:', error);
       setError(err.message);

@@ -1,3 +1,4 @@
+import '../index.css';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChannels } from '../app/features/channels/chanSlice.js';
@@ -28,28 +29,40 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-3 border-end">
-          <h4>Каналы</h4>
-          <ul className="list-unstyled">
-            {(channels).map((channel) => (
-              <li key={channel.id}>{channel.name}</li>
-            ))}
-          </ul>
-        </div>
-        
-        <div className="col-9">
-          <h4>Сообщения</h4>
-          <div className="mb-3" style={{ height: '70vh', overflowY: 'auto' }}>
-            {(messages).map((message) => (
-              <div key={message.id} className="mb-2">
-                <strong>{message.username}:</strong> {message.body}
-              </div>
-            ))}
+    <div className="chat-layout">
+    <div className="channels-sidebar">
+      <h4>Каналы</h4>
+      <ul className="list-unstyled">
+        {channels.map(channel => (
+          <li key={channel.id} className="py-2">
+            {channel.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div className="chat-main">
+      <div className="messages-container">
+        {messages.map(message => (
+          <div key={message.id} className="mb-3">
+            <strong>{message.username}:</strong> {message.body}
           </div>
-        </div>
+        ))}
+      </div>
+
+      <div className="message-input">
+        <form method = 'post'>
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Введите сообщение..."
+            />
+            <button className="btn btn-primary">Отправить</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
   );
 }
