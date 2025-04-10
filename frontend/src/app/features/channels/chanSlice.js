@@ -18,10 +18,15 @@ const channelsSlice = createSlice({
   name: 'channels',
   initialState: {
     items: [],
+    currentChannel: null,
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setCurrentChannel: (state, action) => {
+      state.currentChannel = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchChannels.pending, (state) => {
@@ -38,4 +43,5 @@ const channelsSlice = createSlice({
   },
 });
 
+export const { setCurrentChannel } = channelsSlice.actions;
 export default channelsSlice.reducer;

@@ -3,26 +3,28 @@ import axios from 'axios';
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
-  async (_, { getState }) => {
+  async (channelId) => {
     const { auth } = getState();
-    const response = await axios.get('/api/v1/messages', {
-      headers: { Authorization: `Bearer ${auth.token}` },
+    const response = await axios.get(`/api/v1/channels/${channelId}/messages`, {
+      headers: { Authorization: `Bearer ${auth.token}` }
     });
-    console.log('fetchMessages response:', response.data);
-    return response.data;
+    return response.data.filter(msg => msg.channelId === channelId);
   },
 );
 
 export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
-  async (message, { getState }) => {
+  async ({ channelId, body }, { getState }) => {
     const { auth } = getState();
-    const response = await axios.post('/api/v1/messages', message, {
-      headers: { Authorization: `Bearer ${auth.token}` },
+    const response = await axios.post(`/api/v1/messages`, {
+      channelId,
+      body,
+      username: auth.username,
+    }, {
+      headers: { Authorization: `Bearer ${auth.token}` }
     });
-    console.log('sendMessage response:', response.data);
     return response.data;
-  },
+  }
 );
 
 const messagesSlice = createSlice({
@@ -32,7 +34,14 @@ const messagesSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    addMessage: (state, action) => {
+      state.items.push(action.payload);
+    },
+    removeMessage: (state, action) => {
+      state.items = state.items.filter((msg) => msg.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMessages.pending, (state) => {
@@ -42,14 +51,13 @@ const messagesSlice = createSlice({
         state.status = 'succeeded';
         state.items = action.payload;
       })
-      .addCase(fetchMessages.rejected, (state, action) => {
+      .addCase(fetchMessages.rejected, (state, action) => { 
         state.status = 'failed';
         state.error = action.error.message;
       })
-      .addCase(sendMessage.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-      });
   },
 });
 
+export const { addMessage } = messagesSlice.actions;
+export const { removeMessage } = messagesSlice.actions;
 export default messagesSlice.reducer;
