@@ -14,6 +14,36 @@ export const fetchChannels = createAsyncThunk(
   },
 );
 
+export const addChannel = createAsyncThunk(
+  'channels/addChannel', async (name, { getState }) => {
+    const { auth } = getState();
+    const response = await axios.post('/api/v1/channels', { name }, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+    return response.data;
+  }
+);
+
+export const removeChannel = createAsyncThunk(
+  'channels/removeChannel', async (channelId, { getState }) => {
+    const { auth } = getState();
+    await axios.delete(`/api/v1/channels/${channelId}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+    return channelId;
+  }
+);
+
+export const renameChannel = createAsyncThunk(
+  'channels/renameChannel', async ({ id, name }, { getState }) => {
+    const { auth } = getState();
+    const response = await axios.patch(`/api/v1/channels/${id}`,
+      { name }, 
+      { headers: { Authorization: `Bearer ${auth.token}` } });
+    return response.data;
+  }
+);
+
 const channelsSlice = createSlice({
   name: 'channels',
   initialState: {
@@ -39,6 +69,22 @@ const channelsSlice = createSlice({
       .addCase(fetchChannels.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(addChannel.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+        state.currentChannel = action.payload;
+      })
+      .addCase(renameChannel.fulfilled, (state, action) => {
+        const channel = state.items.find((chan) => chan.id === action.payload.id);
+        if (channel) {
+          channel.name = action.payload.name;
+        }
+      })
+      .addCase(removeChannel.fulfilled, (state, action) => {
+        state.items = state.items.filter((chan) => chan.id !== action.payload);
+        if (state.currentChannel?.id === action.payload) {
+          state.currentChannel = state.items[0] || null;
+        }
       });
   },
 });

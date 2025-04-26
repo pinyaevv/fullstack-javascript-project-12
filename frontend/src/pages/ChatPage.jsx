@@ -1,13 +1,15 @@
 import '../index.css';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { socket } from '../services/socket.js';
+import { getSocket } from '../services/socket.js';
 import { addMessage, sendMessage, removeMessage, fetchMessages } from '../app/features/messages/messSlice.js';
 import { fetchChannels, setCurrentChannel } from '../app/features/channels/chanSlice.js';
+import { ChannelList } from '../components/ChannelList';
 
 export default function ChatPage() {
   const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
+  const socket = getSocket();
 
   const { 
     items: channels = [], 
@@ -22,29 +24,48 @@ export default function ChatPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!currentChannel?.id) return;
-  
-    socket.connect();
-  
-    socket.emit('joinChannel', currentChannel.id);
-  
+    if (!socket.connected) {
+      socket.connect();
+    }
+
     const handleNewMessage = (message) => {
       dispatch(addMessage(message));
     };
-  
+
     const handleRemoveMessage = (deletedMessage) => {
       dispatch(removeMessage(deletedMessage.id));
     };
-  
+
+    const handleNewChannel = (channel) => {
+      console.log('New channel received:', channel);
+    };
+
+    const handleChannelRenamed = (updatedChannel) => {
+      console.log('WS: Channel renamed', updatedChannel);
+    };
+
+    const handleChannelRemoved = (channelId) => {
+      console.log('Channel removed:', channelId);
+    };
+
     socket.on('newMessage', handleNewMessage);
     socket.on('removeMessage', handleRemoveMessage);
-  
+    socket.on('newChannel', handleNewChannel);
+    socket.on('renameChannel', handleChannelRenamed);
+    socket.on('removeChannel', handleChannelRemoved);
+
+    if (currentChannel?.id) {
+      socket.emit('joinChannel', currentChannel.id);
+    }
+
     return () => {
       socket.off('newMessage', handleNewMessage);
       socket.off('removeMessage', handleRemoveMessage);
-      socket.disconnect();
+      socket.off('newChannel', handleNewChannel);
+      socket.off('renameChannel', handleChannelRenamed);
+      socket.off('removeChannel', handleChannelRemoved);
     };
-  }, [currentChannel?.id, dispatch]);
+  }, [currentChannel?.id, dispatch, socket]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -69,19 +90,11 @@ export default function ChatPage() {
           <div className="p-3 border-bottom">
             <h4>Каналы</h4>
           </div>
-          <div className="channel-list">
-            <ul className="list-unstyled mb-0">
-              {channels.map((channel) => (
-                <li 
-                  key={channel.id} 
-                  className={`channel-item ${currentChannel?.id === channel.id ? 'active' : ''}`}
-                  onClick={() => dispatch(setCurrentChannel(channel))}
-                >
-                  {channel.name}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ChannelList 
+            channels={channels}
+            currentChannel={currentChannel}
+            onChannelSelect={(channel) => dispatch(setCurrentChannel(channel))}
+          />
         </div>
       </div>
 

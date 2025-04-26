@@ -5,7 +5,11 @@ import { verifyToken } from './api/auth';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App.jsx';
-import store from './app/store.js';
+import { initializeStore } from './app/store.js';
+import { createSocket } from './services/socket';
+
+const store = initializeStore();
+createSocket(store);
 
 const checkAuth = async () => {
   const token = localStorage.getItem('token');
