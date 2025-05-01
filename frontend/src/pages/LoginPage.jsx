@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { login } from '../api/auth.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import { setCredentials } from '../app/features/auth/authSlice.js';
@@ -26,11 +26,14 @@ export default function LoginPage() {
     try {
       const token = await login(values.username, values.password);
       console.log('Полученный токен:', token);
-      dispatch(setCredentials({ token }));
+      dispatch(setCredentials({
+        token: token,
+        username: values.username,
+      }));
       localStorage.setItem('token', token);
       navigate('/', { replace: true });
     } catch (err) {
-      console.error('Полная ошибка:', error);
+      console.error('Полная ошибка:', err);
       setError(err.message);
     }
   };
@@ -61,6 +64,10 @@ export default function LoginPage() {
             <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
               {isSubmitting ? 'Вход...' : 'Войти'}
             </button>
+
+            <div className="mt-3">
+              Нет аккаунта? <Link to="/signup">Зарегистрироваться</Link>
+            </div>
           </Form>
         )}
       </Formik>
