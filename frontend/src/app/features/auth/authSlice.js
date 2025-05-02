@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import i18n from 'i18next';
 
 export const signup = createAsyncThunk(
   'auth/signup',
@@ -9,9 +10,9 @@ export const signup = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (error.response?.status === 409) {
-        return rejectWithValue({ username: 'Пользователь уже существует' });
+        return rejectWithValue({ username: i18n.t('user_exists') });
       }
-      return rejectWithValue(error.response?.data || 'Ошибка регистрации');
+      return rejectWithValue(error.response?.data || i18n.t('registration_error'));
     }
   }
 );
@@ -48,7 +49,7 @@ const authSlice = createSlice({
       .addCase(signup.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload.token;
-        state.user = action.payload.username;
+        state.username = action.payload.username;
         localStorage.setItem('token', action.payload.token);
         localStorage.setItem('username', action.payload.username);
       })

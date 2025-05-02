@@ -4,26 +4,31 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { renameChannel } from '../../app/features/channels/chanSlice.js';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 export const RenameChannelModal = ({ show, onHide, channel }) => {
   const dispatch = useDispatch();
   const { items: channels = [] } = useSelector((state) => state.channels);
+  const { t } = useTranslation();
+  const [error, setError] = useState(null);
 
   if (!channel) return null;
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле')
+      .min(3, t('min_3_max_20'))
+      .max(20, t('min_3_max_20'))
+      .required(t('required_field'))
       .test(
         'unique-name',
-        'Канал с таким именем уже существует',
+        t('channel_exists'),
         (name) => !channels.some((ch) => ch.name === name && ch.id !== channel.id)
       ),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    setError(null);
     try {
       await dispatch(renameChannel({
         id: channel.id, 
@@ -31,7 +36,8 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
       })).unwrap();
       onHide();
     } catch (error) {
-      console.error('Ошибка переименования:', error);
+      console.error(t('renaming_error'), error);
+      setError(t('renaming_error'));
     } finally {
       setSubmitting(false);
     }
@@ -40,7 +46,7 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('rename_channel')}</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={{ name: channel.name }}
@@ -66,14 +72,14 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={onHide}>
-                Отмена
+                {t('cancel')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Сохранение...' : 'Сохранить'}
+                {isSubmitting ? `${t('save')}...` : `${t('save')}`}
               </Button>
             </Modal.Footer>
           </Form>

@@ -6,25 +6,27 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import { setCredentials } from '../app/features/auth/authSlice.js';
-
-const LoginSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, 'Слишком короткое!')
-    .required('Обязательное поле'),
-  password: Yup.string()
-    .min(3, 'Пароль слишком короткий')
-    .required('Введите пароль'),
-});
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-  const handleSubmit = async (values) => {
+  const LoginSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, t('min_3'))
+      .required(t('required_field')),
+    password: Yup.string()
+      .min(3, t('min_3'))
+      .required(t('required_field')),
+  });
+
+  const handleSubmit = async (values, { setSubmitting }) => {
     console.log('Отправка данных:', values);
     try {
-      const token = await login(values.username, values.password);
+      const token = await login(values.username, values.password, t);
       console.log('Полученный токен:', token);
       dispatch(setCredentials({
         token: token,
@@ -35,12 +37,14 @@ export default function LoginPage() {
     } catch (err) {
       console.error('Полная ошибка:', err);
       setError(err.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <div>
-      <h1>Вход в чат</h1>
+      <h1>{t('login')}</h1>
       {error && <Alert variant='danger'>{error}</Alert>}
       <Formik
         initialValues={{ username: '', password: '' }}
@@ -50,23 +54,23 @@ export default function LoginPage() {
         {({ isSubmitting }) => (
           <Form>
             <div className="mb-3">
-              <label htmlFor="username" className="form-lable">Имя пользователя</label>
+              <label htmlFor="username" className="form-label">{t('username')}</label>
               <Field name="username" type="text" className="form-control" />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="password" className="form-lable">Пароль</label>
+              <label htmlFor="password" className="form-label">{t('password')}</label>
               <Field name="password" type="password" className="form-control" />
               <ErrorMessage name="password" component="div" className="text-danger" />
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? 'Вход...' : 'Войти'}
+              {isSubmitting ? `${t('login')}...` : `${t('login')}`}
             </button>
 
             <div className="mt-3">
-              Нет аккаунта? <Link to="/signup">Зарегистрироваться</Link>
+              {t('no_account')} <Link to="/signup">{t('register')}</Link>
             </div>
           </Form>
         )}

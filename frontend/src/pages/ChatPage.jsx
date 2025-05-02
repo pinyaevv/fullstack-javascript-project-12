@@ -1,15 +1,17 @@
 import '../index.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSocket } from '../services/socket.js';
 import { addMessage, sendMessage, removeMessage, fetchMessages } from '../app/features/messages/messSlice.js';
 import { fetchChannels, setCurrentChannel } from '../app/features/channels/chanSlice.js';
-import { ChannelList } from '../components/ChannelList';
+import { ChannelList } from '../components/ChannelList.jsx';
+import { useTranslation } from 'react-i18next';
 
 export default function ChatPage() {
   const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
   const socket = getSocket();
+  const { t } = useTranslation();
 
   const { 
     items: channels = [], 
@@ -67,6 +69,11 @@ export default function ChatPage() {
     };
   }, [currentChannel?.id, dispatch, socket]);
 
+  const handleChannelSelect = useCallback(
+    (channel) => dispatch(setCurrentChannel(channel)),
+    [dispatch]
+  );
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!messageText.trim() || !currentChannel) return;
@@ -78,7 +85,7 @@ export default function ChatPage() {
       })).unwrap();
       setMessageText('');
     } catch (err) {
-      console.error('Ошибка отправки:', err);
+      console.error(t('network_error'), err);
     }
   };
 
@@ -87,13 +94,10 @@ export default function ChatPage() {
       {/* Колонка с каналами (слева) */}
       <div className="channels-sidebar">
         <div className="d-flex flex-column h-100">
-          <div className="p-3 border-bottom">
-            <h4>Каналы</h4>
-          </div>
           <ChannelList 
             channels={channels}
             currentChannel={currentChannel}
-            onChannelSelect={(channel) => dispatch(setCurrentChannel(channel))}
+            onChannelSelect={handleChannelSelect}
           />
         </div>
       </div>
@@ -102,7 +106,7 @@ export default function ChatPage() {
       <div className="chat-main">
         {/* Заголовок с именем канала */}
         <div className="p-3 border-bottom">
-          <h4>#{currentChannel?.name || 'Канал не выбран'}</h4>
+          <h4>#{currentChannel?.name || t('no_channel_selected')}</h4>
         </div>
 
         {/* Список сообщений */}
@@ -122,11 +126,12 @@ export default function ChatPage() {
           <form onSubmit={handleSendMessage}>
             <div className="input-group">
               <input
+                autoFocus
                 type="text"
                 className="form-control"
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
-                placeholder="Введите сообщение..."
+                placeholder={t('message_placeholder')}
                 disabled={!currentChannel}
               />
               <button 
@@ -134,7 +139,7 @@ export default function ChatPage() {
                 type="submit"
                 disabled={!currentChannel || !messageText.trim()}
               >
-                Отправить
+                {t('send')}
               </button>
             </div>
           </form>

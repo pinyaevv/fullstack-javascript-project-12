@@ -3,30 +3,36 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addChannel } from '../../app/features/channels/chanSlice.js';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 export const AddChannelModal = ({ show, onHide }) => {
     const dispatch = useDispatch();
     const { items: channels = [] } = useSelector((state) => state.channels);
+    const { t } = useTranslation();
+    const [error, setError] = useState(null);
 
     const schema = Yup.object().shape({
         name: Yup.string()
-            .min(3, 'Минимум 3 символа')
-            .max(20, 'Максимум 20 символов')
-            .required('Обязательное поле')
+            .min(3, t('min_3_max_20'))
+            .max(20, t('min_3_max_20'))
+            .required(t('required_field'))
             .test(
                 'unique-name', 
-                'Канал уже существует', 
+                t('channel_exists'), 
                 (name) => !channels.some((chan) => chan.name === name)
             ),
     });
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        setError(null);
         try {
             await dispatch(addChannel(values.name)).unwrap();
             resetForm();
             onHide();
         } catch (error) {
-            console.error('Ошибка:', error);
+            console.error(t('network_error'), error);
+            setError(t('network_error'));
         } finally {
             setSubmitting(false);
         }
@@ -42,27 +48,28 @@ export const AddChannelModal = ({ show, onHide }) => {
                 {({ isSubmitting, handleSubmit }) => (
                     <Form onSubmit={handleSubmit}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Создать канал</Modal.Title>
+                            <Modal.Title>{t('create_channel')}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Field
                                 name="name"
                                 type="text"
                                 className="form-control mb-2"
+                                placeholder={t('channel_name')}
                                 autoFocus
                             />
                             <ErrorMessage name="name" component="div" className="text-danger"/>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={onHide}>
-                                Отмена
+                              {t('cancel')}
                             </Button>
                             <Button 
                                 type="submit" 
                                 variant="primary" 
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? 'Создание...' : 'Создать'}
+                                {isSubmitting ? `${t('creating')}...` : `${t('creating')}`}
                             </Button>
                         </Modal.Footer>
                     </Form>

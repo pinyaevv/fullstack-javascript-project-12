@@ -1,19 +1,21 @@
 import { Dropdown, Button } from 'react-bootstrap';
-import { AddChannelModal } from './modals/AddChannelModal';
-import { DeleteChannelModal } from './modals/DeleteChannelModal';
-import { RenameChannelModal } from './modals/RenameChannelModal';
+import { AddChannelModal } from './modals/AddChannelModal.jsx';
+import { DeleteChannelModal } from './modals/DeleteChannelModal.jsx';
+import { RenameChannelModal } from './modals/RenameChannelModal.jsx';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showRenameModal, setShowRenameModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedChannel, setSelectedChannel] = useState(null);
+    const { t } = useTranslation();
 
     return (
       <div className="channels-sidebar">
           <div className="d-flex justify-content-between mb-3">
-              <h4>Каналы</h4>
+              <h4>{t('channels')}</h4>
               <Button 
                   variant="outline-primary" 
                   size="sm" 
@@ -39,7 +41,7 @@ export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) 
                               size="sm" 
                               className="p-1 channel-menu-toggle"
                               id={`dropdown-${channel.id}`}
-                          >Открыть</Dropdown.Toggle>
+                          >{t('open')}</Dropdown.Toggle>
                           
                           <Dropdown.Menu>
                               <Dropdown.Item 
@@ -49,7 +51,7 @@ export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) 
                                       setShowRenameModal(true);
                                   }}
                               >
-                                  Переименовать
+                                  {t('rename')}
                               </Dropdown.Item>
                               <Dropdown.Item
                                   disabled={channel.id === 1}
@@ -59,7 +61,7 @@ export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) 
                                       setShowDeleteModal(true);
                                   }}
                               >
-                                  Удалить
+                                  {t('delete')}
                               </Dropdown.Item>
                           </Dropdown.Menu>
                       </Dropdown>
