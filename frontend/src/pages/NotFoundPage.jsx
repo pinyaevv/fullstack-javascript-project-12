@@ -7,8 +7,8 @@ export default function NotFoundPage() {
 
   return (
     <div>
-      <h1>{t('404_error')}</h1>
-      <Link to="/">{t('return_to_main')}</Link>
+      <h1>{t('errors.not_found_error')}</h1>
+      <Link to="/">{t('ui_interface.return_to_main')}</Link>
     </div>
   );
 };

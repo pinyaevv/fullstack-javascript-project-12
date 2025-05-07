@@ -85,7 +85,7 @@ export default function ChatPage() {
       })).unwrap();
       setMessageText('');
     } catch (err) {
-      console.error(t('network_error'), err);
+      console.error(t('errors.network_error'), err);
     }
   };
 
@@ -106,7 +106,7 @@ export default function ChatPage() {
       <div className="chat-main">
         {/* Заголовок с именем канала */}
         <div className="p-3 border-bottom">
-          <h4>#{currentChannel?.name || t('no_channel_selected')}</h4>
+          <h4>#{currentChannel?.name || t('ui_interface.no_channel_selected')}</h4>
         </div>
 
         {/* Список сообщений */}
@@ -131,7 +131,7 @@ export default function ChatPage() {
                 className="form-control"
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
-                placeholder={t('message_placeholder')}
+                placeholder={t('ui_interface.message_placeholder')}
                 disabled={!currentChannel}
               />
               <button 
@@ -139,7 +139,7 @@ export default function ChatPage() {
                 type="submit"
                 disabled={!currentChannel || !messageText.trim()}
               >
-                {t('send')}
+                {t('ui_interface.send')}
               </button>
             </div>
           </form>

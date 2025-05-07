@@ -9,6 +9,9 @@ import { initializeStore } from './app/store.js';
 import { createSocket } from './services/socket.js';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n.js';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Bounce } from 'react-toastify'
 
 const store = initializeStore();
 createSocket(store);
@@ -30,9 +33,22 @@ checkAuth().then(() => {
         <I18nextProvider i18n={i18n}>
           <BrowserRouter>
             <App />
-        </BrowserRouter>
-      </I18nextProvider>
-    </Provider>
-  </StrictMode>
+            <ToastContainer
+              position="top-left"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Bounce}
+            />
+          </BrowserRouter>
+        </I18nextProvider>
+      </Provider>
+    </StrictMode>
   );
 });

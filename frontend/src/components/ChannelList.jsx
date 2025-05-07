@@ -15,7 +15,7 @@ export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) 
     return (
       <div className="channels-sidebar">
           <div className="d-flex justify-content-between mb-3">
-              <h4>{t('channels')}</h4>
+              <h4>{t('ui_interface.channels')}</h4>
               <Button 
                   variant="outline-primary" 
                   size="sm" 
@@ -35,36 +35,43 @@ export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) 
                           #{channel.name}
                       </span>
                       
-                      <Dropdown onClick={(e) => e.stopPropagation()}>
-                          <Dropdown.Toggle 
-                              variant="light" 
-                              size="sm" 
-                              className="p-1 channel-menu-toggle"
-                              id={`dropdown-${channel.id}`}
-                          >{t('open')}</Dropdown.Toggle>
-                          
-                          <Dropdown.Menu>
-                              <Dropdown.Item 
-                                  onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSelectedChannel(channel);
-                                      setShowRenameModal(true);
-                                  }}
-                              >
-                                  {t('rename')}
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                  disabled={channel.id === 1}
-                                  onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSelectedChannel(channel);
-                                      setShowDeleteModal(true);
-                                  }}
-                              >
-                                  {t('delete')}
-                              </Dropdown.Item>
-                          </Dropdown.Menu>
-                      </Dropdown>
+                      {channel.removable && (
+                        <Dropdown onClick={(e) => e.stopPropagation()}>
+                            <Dropdown.Toggle 
+                                variant="light" 
+                                size="sm" 
+                                className="p-1 channel-menu-toggle"
+                                id={`dropdown-${channel.id}`}
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="12" cy="5" r="2" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <circle cx="12" cy="19" r="2" />
+                                </svg>
+                            </Dropdown.Toggle>
+                            
+                            <Dropdown.Menu className="dropdown-menu-up">
+                                <Dropdown.Item 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedChannel(channel);
+                                        setShowRenameModal(true);
+                                    }}
+                                >
+                                    {t('ui_interface.rename')}
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedChannel(channel);
+                                        setShowDeleteModal(true);
+                                    }}
+                                >
+                                    {t('ui_interface.delete')}
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                      )}
                   </li>
               ))}
           </ul>

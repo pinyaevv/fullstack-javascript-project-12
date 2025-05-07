@@ -1,9 +1,8 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(49, 49, 49, 0.87);
+  color: #313131;
   background-color: #e8e8e8;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -11,21 +10,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
+/* Base Layout */
 html, body, #root {
   height: 100%;
+  margin: 0;
 }
 
-/* Основные стили чата */
 .chat-layout {
   height: 100vh;
   display: flex;
 }
 
+/* Channels Sidebar */
 .channels-sidebar {
   width: 25%;
   min-width: 250px;
@@ -43,24 +39,16 @@ html, body, #root {
   min-width: 0;
 }
 
-.messages-container {
-  flex-grow: 1;
-  padding: 1rem;
-  overflow-y: auto;
-}
-
-.message-input {
-  padding: 1rem;
-  border-top: 1px solid #dee2e6;
-  background: #f8f9fa;
-  min-height: 80px;
-}
-
-/* Элементы интерфейса */
+/* Channel Items */
 .channel-item {
+  display: flex;
+  align-items: center;
   padding: 0.75rem 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  position: relative;
 }
 
 .channel-item:hover {
@@ -72,8 +60,182 @@ html, body, #root {
   color: white;
 }
 
-.channel-item.active:hover {
-  background-color: #0b5ed7;
+.channel-name {
+  flex-grow: 1;
+}
+
+/* Dropdown Menu Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  z-index: 1000;
+  display: none;
+  min-width: 160px;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.channel-menu-toggle {
+  opacity: 0.5;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.channel-item:hover .channel-menu-toggle {
+  opacity: 1;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+/* Modal Styles - Fixed */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  max-width: 500px;
+  margin: 1.75rem;
+  pointer-events: none;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+}
+
+.modal-footer > * {
+  margin: 0.25rem;
+}
+
+.close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.close:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+/* Messages Area */
+.messages-container {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .message {
@@ -82,6 +244,60 @@ html, body, #root {
   border-radius: 4px;
   background-color: #f8f9fa;
   animation: fadeIn 0.3s ease;
+}
+
+.message-input {
+  padding: 1rem;
+  border-top: 1px solid #dee2e6;
+  background: #f8f9fa;
+  min-height: 80px;
+}
+
+/* Buttons & Inputs */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
 }
 
 .input-group {
@@ -96,43 +312,90 @@ html, body, #root {
   border-radius: 4px;
 }
 
-.btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background-color: #0d6efd;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-}
-
-.btn-primary:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
-/* Модальные окна */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* Анимации */
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Мобильная адаптация */
-@media (max-width: 768px) {
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ced4da;
+  border-radius: 3px;
+}
+
+/* Header Styles */
+.navbar {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  min-height: 64px;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  transition: color 0.2s;
+  margin-right: 2rem;
+  padding: 0.5rem 0;
+}
+
+.navbar-toggler {
+  margin-left: auto;
+  border: none;
+  padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar-brand:hover {
+  color: #0b5ed7 !important;
+}
+
+.logout-btn {
+  transition: all 0.2s;
+  border-width: 2px;
+}
+
+.logout-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.username {
+  font-weight: 500;
+  color: #495057;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.logout-btn {
+  transition: all 0.2s;
+  border-width: 2px;
+  white-space: nowrap;
+  padding: 0.375rem 1rem;
+}
+
+/* Mobile Adaptation */
+@media (max-width: 992px) {
   .chat-layout {
     flex-direction: column;
   }
@@ -144,14 +407,22 @@ html, body, #root {
     border-right: none;
     border-bottom: 1px solid #dee2e6;
   }
-}
 
-/* Кастомный скролл */
-::-webkit-scrollbar {
-  width: 6px;
-}
+  .navbar-collapse {
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    margin-top: 0.5rem;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #ced4da;
-  border-radius: 3px;
+  .user-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
 }

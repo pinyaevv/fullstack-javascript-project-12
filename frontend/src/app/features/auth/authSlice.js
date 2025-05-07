@@ -1,18 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import i18n from 'i18next';
+import { toast } from 'react-toastify';
 
 export const signup = createAsyncThunk(
   'auth/signup',
   async ({ username, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/v1/signup', { username, password });
+      toast.success(i18n.t('notify.registration_success'));
       return response.data;
     } catch (error) {
       if (error.response?.status === 409) {
-        return rejectWithValue({ username: i18n.t('user_exists') });
+        toast.error(i18n.t('notify.load_error'));
+        return rejectWithValue({ username: i18n.t('errors.user_exists') });
       }
-      return rejectWithValue(error.response?.data || i18n.t('registration_error'));
+      return rejectWithValue(error.response?.data || i18n.t('errors.registration_error'));
     }
   }
 );

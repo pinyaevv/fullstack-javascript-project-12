@@ -1,9 +1,10 @@
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const API_URL = '/api/v1';
 
 const getErrorMessage = (error, t) => {
-  return error.response?.data?.message || t('incorrect_log_or_pas');
+  return error.response?.data?.message || t('errors.incorrect_login_or_password');
 };
 
 export const login = async (username, password, t) => {
@@ -14,12 +15,13 @@ export const login = async (username, password, t) => {
     });
 
     if (!response.data?.token) {
-      throw new Error(t('server_didn\'t_ret_tok'));
+      throw new Error(t('errors.server_did_not_return_token'));
     }
 
     return response.data.token;
   } catch (error) {
-    console.error(t('auth_error'), error);
+    toast.error(t('notify.auth_error'))
+    console.error('Auth error:', error);
     throw new Error(getErrorMessage(error, t));
   }
 };
@@ -31,7 +33,7 @@ export const verifyToken = async (token, t) => {
     });
     return response.status === 200;
   } catch {
-    console.error(t('token_verification_error'), error);
+    console.error('Token verification error:', error);
     return false;
   }
 };

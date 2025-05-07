@@ -14,15 +14,15 @@ export const SignupPage = () => {
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, t('min_3_max_20'))
-      .max(20, t('min_3_max_20'))
-      .required(t('required_field')),
+      .min(3, t('validation.min_3_max_20'))
+      .max(20, t('validation.min_3_max_20'))
+      .required(t('validation.required_field')),
     password: Yup.string()
-      .min(6, t('min_6'))
-      .required(t('required_field')),
+      .min(6, t('validation.min_6'))
+      .required(t('validation.required_field')),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], t('passwords_must_match'))
-      .required(t('required_field')),
+      .oneOf([Yup.ref('password'), null], t('validation.passwords_must_match'))
+      .required(t('validation.required_field')),
   });
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
@@ -38,7 +38,7 @@ export const SignupPage = () => {
 
   return (
     <Container className="mt-5" style={{ maxWidth: '400px' }}>
-      <h2 className="mb-4">{t('signup')}</h2>
+      <h2 className="mb-4">{t('ui_interface.signup')}</h2>
       <Formik
         initialValues={{ username: '', password: '', confirmPassword: '' }}
         validationSchema={SignupSchema}
@@ -49,29 +49,29 @@ export const SignupPage = () => {
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
             
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">{t('username')}</label>
+              <label htmlFor="username" className="form-label">{t('form.username')}</label>
               <Field name="username" type="text" className="form-control" />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">{t('password')}</label>
+              <label htmlFor="password" className="form-label">{t('form.password')}</label>
               <Field name="password" type="password" className="form-control" />
               <ErrorMessage name="password" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="confirmPassword" className="form-label">{t('confirm_password')}</label>
+              <label htmlFor="confirmPassword" className="form-label">{t('form.confirm_password')}</label>
               <Field name="confirmPassword" type="password" className="form-control" />
               <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
             </div>
 
             <Button type="submit" variant="primary" disabled={isSubmitting}>
-              {isSubmitting ? `${t('signup')}...` : `${t('signup')}`}
+              {isSubmitting ? `${t('ui_interface.signup')}...` : `${t('ui_interface.signup')}`}
             </Button>
 
             <div className="mt-3">
-              {t('have_account')} <Link to="/login">{t('login_link')}</Link>
+              {t('auth.have_account')} <Link to="/login">{t('auth.login_link')}</Link>
             </div>
           </Form>
         )}

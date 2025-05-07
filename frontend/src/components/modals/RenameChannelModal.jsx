@@ -17,12 +17,12 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .min(3, t('min_3_max_20'))
-      .max(20, t('min_3_max_20'))
-      .required(t('required_field'))
+      .min(3, t('validation.min_3_max_20'))
+      .max(20, t('validation.min_3_max_20'))
+      .required(t('validation.required_field'))
       .test(
         'unique-name',
-        t('channel_exists'),
+        t('validation.channel_exists'),
         (name) => !channels.some((ch) => ch.name === name && ch.id !== channel.id)
       ),
   });
@@ -36,8 +36,8 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
       })).unwrap();
       onHide();
     } catch (error) {
-      console.error(t('renaming_error'), error);
-      setError(t('renaming_error'));
+      console.error(t('errors.renaming_error'), error);
+      setError(t('errors.renaming_error'));
     } finally {
       setSubmitting(false);
     }
@@ -46,7 +46,7 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t('rename_channel')}</Modal.Title>
+        <Modal.Title>{t('modal_window.rename_channel')}</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={{ name: channel.name }}
@@ -72,14 +72,14 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={onHide}>
-                {t('cancel')}
+                {t('ui_interface.cancel')}
               </Button>
               <Button
                 type="submit"
                 variant="primary"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? `${t('save')}...` : `${t('save')}`}
+                {isSubmitting ? `${t('ui_interface.save')}...` : `${t('ui_interface.save')}`}
               </Button>
             </Modal.Footer>
           </Form>

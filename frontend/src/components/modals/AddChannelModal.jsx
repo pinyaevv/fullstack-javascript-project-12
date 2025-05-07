@@ -14,12 +14,12 @@ export const AddChannelModal = ({ show, onHide }) => {
 
     const schema = Yup.object().shape({
         name: Yup.string()
-            .min(3, t('min_3_max_20'))
-            .max(20, t('min_3_max_20'))
-            .required(t('required_field'))
+            .min(3, t('validation.min_3_max_20'))
+            .max(20, t('validation.min_3_max_20'))
+            .required(t('validation.required_field'))
             .test(
                 'unique-name', 
-                t('channel_exists'), 
+                t('validation.channel_exists'), 
                 (name) => !channels.some((chan) => chan.name === name)
             ),
     });
@@ -31,15 +31,15 @@ export const AddChannelModal = ({ show, onHide }) => {
             resetForm();
             onHide();
         } catch (error) {
-            console.error(t('network_error'), error);
-            setError(t('network_error'));
+            console.error(t('errors.network_error'), error);
+            setError(t('errors.network_error'));
         } finally {
             setSubmitting(false);
         }
     };
 
     return (
-        <Modal show={show} onHide={onHide} centered>
+        <Modal show={show} onHide={onHide} centered backdrop="static">
             <Formik
                 initialValues={{ name: '' }}
                 validationSchema={schema}
@@ -48,28 +48,28 @@ export const AddChannelModal = ({ show, onHide }) => {
                 {({ isSubmitting, handleSubmit }) => (
                     <Form onSubmit={handleSubmit}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{t('create_channel')}</Modal.Title>
+                            <Modal.Title>{t('modal_window.create_channel')}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Field
                                 name="name"
                                 type="text"
                                 className="form-control mb-2"
-                                placeholder={t('channel_name')}
+                                placeholder={t('modal_window.channel_name')}
                                 autoFocus
                             />
                             <ErrorMessage name="name" component="div" className="text-danger"/>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={onHide}>
-                              {t('cancel')}
+                              {t('ui_interface.cancel')}
                             </Button>
                             <Button 
                                 type="submit" 
                                 variant="primary" 
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? `${t('creating')}...` : `${t('creating')}`}
+                                {isSubmitting ? `${t('ui_interface.create')}...` : `${t('ui_interface.create')}`}
                             </Button>
                         </Modal.Footer>
                     </Form>
