@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import i18n from '../../../i18n';
+import { toast } from 'react-toastify';
+import { filterProfanity, hasProfanity } from '../../../utils/profanityFilter';
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
@@ -14,16 +17,25 @@ export const fetchMessages = createAsyncThunk(
 
 export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
-  async ({ channelId, body }, { getState }) => {
-    const { auth } = getState();
-    const response = await axios.post(`/api/v1/messages`, {
-      channelId,
-      body,
-      username: auth.username,
-    }, {
-      headers: { Authorization: `Bearer ${auth.token}` }
-    });
-    return response.data;
+  async ({ channelId, body }, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+
+      const cleanBody = filterProfanity(body);
+
+      const response = await axios.post('/api/v1/messages', {
+        channelId,
+        body: cleanBody,
+        username: auth.username,
+      }, {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      });
+
+      return response.data;
+    } catch (error) {
+      toast.error(i18n.t('errors.network_error'));
+      return rejectWithValue(error.message);
+    }
   }
 );
 

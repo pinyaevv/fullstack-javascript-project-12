@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addChannel } from '../../app/features/channels/chanSlice.js';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { hasProfanity } from '../../utils/profanityFilter.js';
+import { toast } from 'react-toastify';
 
 export const AddChannelModal = ({ show, onHide }) => {
     const dispatch = useDispatch();
@@ -24,8 +26,17 @@ export const AddChannelModal = ({ show, onHide }) => {
             ),
     });
 
-    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    const handleSubmit = async (values, { setSubmitting, resetForm, setFieldError }) => {
         setError(null);
+    
+        if (hasProfanity(values.name)) {
+            toast.error(t('profanity.has_profanity'));
+            setError(t('profanity.has_profanity'));
+            setFieldError('name', t('profanity.has_profanity'));
+            setSubmitting(false);
+            return;
+        }
+    
         try {
             await dispatch(addChannel(values.name)).unwrap();
             resetForm();
@@ -33,6 +44,7 @@ export const AddChannelModal = ({ show, onHide }) => {
         } catch (error) {
             console.error(t('errors.network_error'), error);
             setError(t('errors.network_error'));
+            setFieldError('name', error);
         } finally {
             setSubmitting(false);
         }

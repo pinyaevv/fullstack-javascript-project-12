@@ -85,6 +85,10 @@ const resources = {
         user_exists: "Пользователь уже существует",
         channel_id_missing: "Идентификатор канала отсутствует",
       },
+
+      profanity: {
+        has_profanity: "Название содержит недопустимые слова",
+      }
     }
   }
 };
