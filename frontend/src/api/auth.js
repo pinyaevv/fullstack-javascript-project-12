@@ -3,37 +3,34 @@ import axios from 'axios';
 
 const API_URL = '/api/v1';
 
-const getErrorMessage = (error, t) => {
-  return error.response?.data?.message || t('errors.incorrect_login_or_password');
-};
+const getErrorMessage = (error, t) => error?.response?.data?.message || t('errors.incorrect_login_or_password');
+
+const showAuthError = (t) => () => toast.error(t('notify.auth_error'));
+const logError = (message) => (error) => console.error(message, error);
+
+const handleLoginResponse = (response, t) => (
+  response?.data?.token
+    ? Promise.resolve(response.data.token)
+    : Promise.reject(new Error(t('errors.server_did_not_return_token')))
+);
 
 export const login = async (username, password, t) => {
-  try {
-    const response = await axios.post(`${API_URL}/login`, {
-      username,
-      password,
+  axios.post(`${API_URL}/login`, { username, password })
+    .then((response) => handleLoginResponse(response, t))
+    .catch((error) => {
+      showAuthError(t)();
+      logError('Auth error:')(error);
+      return Promise.reject(new Error(getErrorMessage(error, t)));
     });
-
-    if (!response.data?.token) {
-      throw new Error(t('errors.server_did_not_return_token'));
-    }
-
-    return response.data.token;
-  } catch (error) {
-    toast.error(t('notify.auth_error'))
-    console.error('Auth error:', error);
-    throw new Error(getErrorMessage(error, t));
-  }
 };
 
-export const verifyToken = async (token, t) => {
-  try {
-    const response = await axios.get(`${API_URL}/channels`, {
-      headers: { Authorization: `Bearer ${token}` },
+export const verifyToken = async (token) => {
+  axios.get(`${API_URL}/channels`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => response.status === 200)
+    .catch((error) => {
+      logError('Token verification error:')(error);
+      return false;
     });
-    return response.status === 200;
-  } catch {
-    console.error('Token verification error:', error);
-    return false;
-  }
 };

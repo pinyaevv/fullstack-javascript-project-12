@@ -1,75 +1,81 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import i18n from '../../../i18n';
 import { toast } from 'react-toastify';
-import { filterProfanity, hasProfanity } from '../../../utils/profanityFilter';
+import i18n from '../../../i18n';
+import { filterProfanity } from '../../../utils/profanityFilter';
+
+const notifyError = (msg) => () => toast.error(msg);
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
-  async (channelId) => {
+  (channelId, { getState, rejectWithValue }) => {
     const { auth } = getState();
-    const response = await axios.get(`/api/v1/channels/${channelId}/messages`, {
-      headers: { Authorization: `Bearer ${auth.token}` }
-    });
-    return response.data.filter(msg => msg.channelId === channelId);
+    return axios.get(`/api/v1/channels/${channelId}/messages`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then((res) => res.data.filter((msg) => msg.channelId === channelId))
+      .catch((err) => rejectWithValue(err.message));
   },
 );
 
 export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
-  async ({ channelId, body }, { getState, rejectWithValue }) => {
-    try {
-      const { auth } = getState();
+  ({ channelId, body }, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    const cleanBody = filterProfanity(body);
 
-      const cleanBody = filterProfanity(body);
-
-      const response = await axios.post('/api/v1/messages', {
-        channelId,
-        body: cleanBody,
-        username: auth.username,
-      }, {
-        headers: { Authorization: `Bearer ${auth.token}` },
+    return axios.post('/api/v1/messages', {
+      channelId,
+      body: cleanBody,
+      username: auth.username,
+    }, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then((res) => res.data)
+      .catch((err) => {
+        notifyError(i18n.t('errors.network_error'))();
+        return rejectWithValue(err.message);
       });
-
-      return response.data;
-    } catch (error) {
-      toast.error(i18n.t('errors.network_error'));
-      return rejectWithValue(error.message);
-    }
-  }
+  },
 );
+
+const initialState = {
+  items: [],
+  status: 'idle',
+  error: null,
+};
 
 const messagesSlice = createSlice({
   name: 'messages',
-  initialState: {
-    items: [],
-    status: 'idle',
-    error: null,
-  },
+  initialState,
   reducers: {
-    addMessage: (state, action) => {
-      state.items.push(action.payload);
-    },
-    removeMessage: (state, action) => {
-      state.items = state.items.filter((msg) => msg.id !== action.payload);
-    },
+    addMessage: (state, action) => ({
+      ...state,
+      items: [...state.items, action.payload],
+    }),
+    removeMessage: (state, action) => ({
+      ...state,
+      items: state.items.filter((msg) => msg.id !== action.payload),
+    }),
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchMessages.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
-      })
-      .addCase(fetchMessages.rejected, (state, action) => { 
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
+      .addCase(fetchMessages.pending, (state) => ({
+        ...state,
+        status: 'loading',
+      }))
+      .addCase(fetchMessages.fulfilled, (state, action) => ({
+        ...state,
+        status: 'succeeded',
+        items: action.payload,
+      }))
+      .addCase(fetchMessages.rejected, (state, action) => ({
+        ...state,
+        status: 'failed',
+        error: action.payload,
+      }));
   },
 });
 
-export const { addMessage } = messagesSlice.actions;
-export const { removeMessage } = messagesSlice.actions;
+export const { addMessage, removeMessage } = messagesSlice.actions;
 export default messagesSlice.reducer;

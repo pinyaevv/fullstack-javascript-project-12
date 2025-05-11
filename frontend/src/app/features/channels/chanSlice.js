@@ -3,107 +3,133 @@ import axios from 'axios';
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
 
+const notifySuccess = (message) => () => toast.success(message);
+const notifyError = (message) => () => toast.error(message);
+const log = (data) => () => console.log(data);
+
 export const fetchChannels = createAsyncThunk(
-  'channels/fetchChannels', async (_, { getState }) => {
+  'channels/fetchChannels',
+  (_, { getState, rejectWithValue }) => {
     const { auth } = getState();
-    const response = await axios.get('/api/v1/channels', {
+    return axios.get('/api/v1/channels', {
       headers: { Authorization: `Bearer ${auth.token}` },
-    });
-    
-    console.log('fetchChannels response:', response.data);
-    return response.data;
+    })
+      .then((res) => {
+        log(['fetchChannels response:', res.data])();
+        return res.data;
+      })
+      .catch((err) => rejectWithValue(err.message));
   },
 );
 
 export const addChannel = createAsyncThunk(
-  'channels/addChannel', async (name, { getState, rejectWithValue }) => {
-    try {
-      const { auth } = getState();
-      const response = await axios.post('/api/v1/channels', { name }, {
-        headers: { Authorization: `Bearer ${auth.token}` },
+  'channels/addChannel',
+  (name, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    return axios.post('/api/v1/channels', { name }, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then((res) => {
+        notifySuccess(i18n.t('notify.channel_added'))();
+        return res.data;
+      })
+      .catch((err) => {
+        notifyError(i18n.t('notify.channel_added_error'))();
+        return rejectWithValue(err.message);
       });
-      toast.success(i18n.t('notify.channel_added'));
-      return response.data;
-    } catch (error) {
-      toast.error(i18n.t('notify.channel_added_error'));
-      return rejectWithValue(error.message);
-    }
-  }
+  },
 );
 
 export const removeChannel = createAsyncThunk(
-  'channels/removeChannel', async (channelId, { getState, rejectWithValue }) => {
-    try {
-      const { auth } = getState();
-      await axios.delete(`/api/v1/channels/${channelId}`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
+  'channels/removeChannel',
+  (channelId, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    return axios.delete(`/api/v1/channels/${channelId}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then(() => {
+        notifySuccess(i18n.t('notify.channel_removed'))();
+        return channelId;
+      })
+      .catch((err) => {
+        notifyError(i18n.t('notify.channel_renamed_error'))();
+        return rejectWithValue(err.message);
       });
-      toast.success(i18n.t('notify.channel_removed'));
-      return channelId;
-    } catch (error) {
-      toast.error(i18n.t('notify.channel_renamed_error'));
-      return rejectWithValue(error.message);
-    }
-  }
+  },
 );
 
 export const renameChannel = createAsyncThunk(
-  'channels/renameChannel', async ({ id, name }, { getState, rejectWithValue }) => {
-    try {
-      const { auth } = getState();
-      const response = await axios.patch(`/api/v1/channels/${id}`,
-        { name }, 
-        { headers: { Authorization: `Bearer ${auth.token}` } });
-      toast.success(i18n.t('notify.channel_renamed'));
-      return response.data;
-    } catch (error) {
-      toast.error(i18n.t('notify.channel_removed_error'));
-      return rejectWithValue(error.message);
-    }
-  }
+  'channels/renameChannel',
+  ({ id, name }, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    return axios.patch(`/api/v1/channels/${id}`, { name }, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    })
+      .then((res) => {
+        notifySuccess(i18n.t('notify.channel_renamed'))();
+        return res.data;
+      })
+      .catch((err) => {
+        notifyError(i18n.t('notify.channel_removed_error'))();
+        return rejectWithValue(err.message);
+      });
+  },
 );
+
+const initialState = {
+  items: [],
+  currentChannel: null,
+  status: 'idle',
+  error: null,
+};
+
+const setCurrentChannelReducer = (state, action) => ({
+  ...state,
+  currentChannel: action.payload,
+});
 
 const channelsSlice = createSlice({
   name: 'channels',
-  initialState: {
-    items: [],
-    currentChannel: null,
-    status: 'idle',
-    error: null,
-  },
+  initialState,
   reducers: {
-    setCurrentChannel: (state, action) => {
-      state.currentChannel = action.payload;
-    },
+    setCurrentChannel: setCurrentChannelReducer,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChannels.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchChannels.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
-      })
-      .addCase(fetchChannels.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
-      .addCase(addChannel.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-        state.currentChannel = action.payload;
-      })
-      .addCase(renameChannel.fulfilled, (state, action) => {
-        const channel = state.items.find((chan) => chan.id === action.payload.id);
-        if (channel) {
-          channel.name = action.payload.name;
-        }
-      })
+      .addCase(fetchChannels.pending, (state) => ({
+        ...state,
+        status: 'loading',
+      }))
+      .addCase(fetchChannels.fulfilled, (state, action) => ({
+        ...state,
+        status: 'succeeded',
+        items: action.payload,
+      }))
+      .addCase(fetchChannels.rejected, (state, action) => ({
+        ...state,
+        status: 'failed',
+        error: action.payload,
+      }))
+      .addCase(addChannel.fulfilled, (state, action) => ({
+        ...state,
+        items: [...state.items, action.payload],
+        currentChannel: action.payload,
+      }))
+      .addCase(renameChannel.fulfilled, (state, action) => ({
+        ...state,
+        items: state.items.map((channel) => (channel.id === action.payload.id
+          ? { ...channel, name: action.payload.name }
+          : channel)),
+      }))
       .addCase(removeChannel.fulfilled, (state, action) => {
-        state.items = state.items.filter((chan) => chan.id !== action.payload);
-        if (state.currentChannel?.id === action.payload) {
-          state.currentChannel = state.items[0] || null;
-        }
+        const filtered = state.items.filter((chan) => chan.id !== action.payload);
+        const updatedCurrent = state.currentChannel?.id === action.payload ? (filtered[0] || null) : state.currentChannel;
+
+        return {
+          ...state,
+          items: filtered,
+          currentChannel: updatedCurrent,
+        };
       });
   },
 });

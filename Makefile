@@ -8,7 +8,7 @@ build:
 	cd frontend && npm run build
 
 lint:
-	npx eslint .
+	cd frontend && npx eslint .
 
 fix:
-	npx eslint --fix .
+	cd frontend && npx eslint --fix .
