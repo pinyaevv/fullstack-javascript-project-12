@@ -67,6 +67,8 @@ export default function LoginPage() {
                 type="text"
                 className="form-control"
                 innerRef={usernameInput}
+                data-testid="username"
+                autoFocus
               />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
