@@ -21,17 +21,18 @@ const attachEvents = (socket) => {
       ? reconnect()
       : console.log('WS: Disconnected', reason)
   ));
-  socket.on('connect_error', (error) => setTimeout(reconnect, 1000));
+  socket.on('connect_error', () => setTimeout(reconnect, 1000));
   return socket;
 };
 
 const getOrCreateSocket = (() => {
   let instance = null;
-  return () => (
-    instance !== null
-      ? instance
-      : (instance = attachEvents(initSocket()))
-  );
+  return () => {
+    if (instance === null) {
+      instance = attachEvents(initSocket());
+    }
+    return instance;
+  };
 })();
 
 export const createSocket = () => getOrCreateSocket();

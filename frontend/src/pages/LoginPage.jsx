@@ -36,7 +36,9 @@ export default function LoginPage() {
       navigate('/', { replace: true });
     } catch (err) {
       console.error(t('errors.error'), err);
-      setError(err.message);
+      setError(err?.response?.status === 401
+        ? t('errors.incorrect_login_or_password')
+        : t('errors.network_error'));
     } finally {
       setSubmitting(false);
     }

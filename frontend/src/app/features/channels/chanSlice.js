@@ -123,7 +123,8 @@ const channelsSlice = createSlice({
       }))
       .addCase(removeChannel.fulfilled, (state, action) => {
         const filtered = state.items.filter((chan) => chan.id !== action.payload);
-        const updatedCurrent = state.currentChannel?.id === action.payload ? (filtered[0] || null) : state.currentChannel;
+        const updatedCurrent = state.currentChannel?.id === action.payload
+          ? (filtered[0] || null) : state.currentChannel;
 
         return {
           ...state,

@@ -32,7 +32,7 @@ const resources = {
       },
 
       ui_interface: {
-        login: 'Вход в чат',
+        login: 'Войти',
         signup: 'Регистрация',
         logout: 'Выйти',
         cancel: 'Отмена',
@@ -57,8 +57,8 @@ const resources = {
       validation: {
         required_field: 'Обязательное поле',
         min_3_max_20: 'От 3 до 20 символов',
-        min_3: 'Пароль должен быть от 3 символов',
-        min_6: 'Пароль должен быть от 6 символов',
+        min_3: 'Не менее 3 символов',
+        min_6: 'Не менее 6 символов',
         passwords_must_match: 'Пароли должны совпадать',
         channel_exists: 'Канал с таким именем уже существует',
       },
@@ -81,7 +81,7 @@ const resources = {
         network_error: 'Ошибка сети',
         server_did_not_return_token: 'Сервер не вернул токен',
         token_verification_error: 'Ошибка верификации токена:',
-        incorrect_login_or_password: 'Неверный логин или пароль',
+        incorrect_login_or_password: 'Неверные имя пользователя или пароль',
         user_exists: 'Пользователь уже существует',
         channel_id_missing: 'Идентификатор канала отсутствует',
       },

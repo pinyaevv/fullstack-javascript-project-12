@@ -25,6 +25,7 @@ export const Header = () => {
                   variant="outline-primary"
                   onClick={() => dispatch(logout())}
                   className="logout-btn"
+                  aria-label="logout"
                 >
                   {t('ui_interface.logout')}
                 </Button>

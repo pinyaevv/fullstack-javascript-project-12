@@ -37,15 +37,15 @@ const checkAuth = async () => {
   }
 };
 
-const TestErrorButton = () => {
-  const rollbar = useRollbar();
+// const TestErrorButton = () => {
+//   const rollbar = useRollbar();
 
-  const handleClick = () => {
-    rollbar.error('Test Rollbar error from ChatSlack');
-  };
+//   const handleClick = () => {
+//     rollbar.error('Test Rollbar error from ChatSlack');
+//   };
 
-  return <button onClick={handleClick}>🔥 Test Rollbar Error</button>;
-};
+//   return <button onClick={handleClick}>🔥 Test Rollbar Error</button>;
+// };
 
 checkAuth().then(() => {
   createRoot(document.getElementById('root')).render(
@@ -56,7 +56,7 @@ checkAuth().then(() => {
             <I18nextProvider i18n={i18n}>
               <BrowserRouter>
                 <App />
-                <TestErrorButton />
+                {/* <TestErrorButton /> */}
                 <ToastContainer
                   position="top-left"
                   autoClose={5000}
