@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { login } from '../api/auth.js';
@@ -14,6 +14,14 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const usernameInput = useRef(null);
+
+  useEffect(() => {
+    if (usernameInput.current) {
+      usernameInput.current.focus();
+    }
+  }, []);
+
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, t('validation.min_3'))
@@ -24,10 +32,8 @@ export default function LoginPage() {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log('Отправка данных:', values);
     try {
       const token = await login(values.username, values.password, t);
-      console.log('Полученный токен:', token);
       dispatch(setCredentials({
         token: token,
         username: values.username,
@@ -35,7 +41,6 @@ export default function LoginPage() {
       localStorage.setItem('token', token);
       navigate('/', { replace: true });
     } catch (err) {
-      console.error(t('errors.error'), err);
       setError(err?.response?.status === 401
         ? t('errors.incorrect_login_or_password')
         : t('errors.network_error'));
@@ -57,7 +62,12 @@ export default function LoginPage() {
           <Form>
             <div className="mb-3">
               <label htmlFor="username" className="form-label">{t('form.username')}</label>
-              <Field name="username" type="text" className="form-control" />
+              <Field
+                name="username"
+                type="text"
+                className="form-control"
+                innerRef={usernameInput}
+              />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
