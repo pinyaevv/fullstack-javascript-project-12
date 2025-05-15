@@ -7,7 +7,7 @@ const resources = {
       auth: {
         no_account: 'Нет аккаунта?',
         have_account: 'Уже есть аккаунт?',
-        register: 'Зарегистрироваться',
+        register: 'Регистрация',
         login_link: 'Войти',
       },
 
@@ -49,9 +49,9 @@ const resources = {
       },
 
       form: {
-        username: 'Ваш ник',
+        username: 'Имя пользователя',
         password: 'Пароль',
-        confirm_password: 'Подтверждение пароля',
+        confirm_password: 'Подтвердите пароль',
       },
 
       validation: {
