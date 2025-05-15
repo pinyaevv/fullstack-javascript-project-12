@@ -49,7 +49,7 @@ const resources = {
       },
 
       form: {
-        username: 'Имя пользователя',
+        username: 'Ваш ник',
         password: 'Пароль',
         confirm_password: 'Подтверждение пароля',
       },

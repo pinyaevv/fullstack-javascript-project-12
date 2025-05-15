@@ -61,8 +61,8 @@ export default function LoginPage() {
         {({ isSubmitting }) => (
           <Form>
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">{t('form.username')}</label>
               <Field
+                placeholder={t('form.username')}
                 name="username"
                 type="text"
                 className="form-control"
@@ -72,8 +72,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">{t('form.password')}</label>
-              <Field name="password" type="password" className="form-control" />
+              <Field name="password" type="password" className="form-control" placeholder={t('form.password')}/>
               <ErrorMessage name="password" component="div" className="text-danger" />
             </div>
 
