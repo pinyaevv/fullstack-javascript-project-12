@@ -82,7 +82,7 @@ const resources = {
         server_did_not_return_token: 'Сервер не вернул токен',
         token_verification_error: 'Ошибка верификации токена:',
         incorrect_login_or_password: 'Неверные имя пользователя или пароль',
-        user_exists: 'Пользователь уже существует',
+        user_exists: 'Такой пользователь уже существует',
         channel_id_missing: 'Идентификатор канала отсутствует',
       },
 
