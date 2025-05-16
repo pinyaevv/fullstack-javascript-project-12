@@ -51,17 +51,20 @@ export const SignupPage = () => {
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
             
             <div className="mb-3">
-              <Field placeholder={t('form.username')} name="username" type="text" as="input" className="form-control" />
+              <label className="form-label" htmlFor="username">{t('form.username')}</label>
+              <Field id="username" placeholder={t('form.username')} name="username" type="text" className="form-control" />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
-              <Field placeholder={t('form.password')} name="password" type="password" as="input" className="form-control" />
+              <label className="form-label" htmlFor="password">{t('form.password')}</label>
+              <Field id="password" placeholder={t('form.password')} name="password" type="password" className="form-control" />
               <ErrorMessage name="password" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
-              <Field placeholder={t('form.confirm_password')} name="confirmPassword" type="password" as="input" className="form-control" />
+              <label className="form-label" htmlFor="confirmPassword">{t('form.confirm_password')}</label>
+              <Field id="confirmPassword" placeholder={t('form.confirm_password')} name="confirmPassword" type="password" className="form-control" />
               <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
             </div>
 
