@@ -57,8 +57,11 @@ export default function LoginPage() {
         initialValues={{ username: '', password: '' }}
         validationSchema={LoginSchema}
         onSubmit={handleSubmit}
+        validateOnBlur={false}
+        validateOnChange={false}
       >
         {({ isSubmitting }) => (
+          <>
           <Form>
             <div className="mb-3">
               <Field
@@ -81,11 +84,11 @@ export default function LoginPage() {
             <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
               {isSubmitting ? `${t('ui_interface.login')}...` : `${t('ui_interface.login')}`}
             </button>
-
+          </Form>
             <div className="mt-3">
               {t('auth.no_account')} <Link to="/signup">{t('auth.register')}</Link>
             </div>
-          </Form>
+          </>
         )}
       </Formik>
     </div>
