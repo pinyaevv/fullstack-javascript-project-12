@@ -43,13 +43,15 @@ export const SignupPage = () => {
         initialValues={{ username: '', password: '', confirmPassword: '' }}
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
+        validateOnBlur={false}
+        validateOnChange={false}
       >
         {({ isSubmitting, errors }) => (
           <Form>
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
             
             <div className="mb-3">
-              <Field placeholder={t('form.username')} name="username" type="text" className="form-control" autoFocus />
+              <Field placeholder="Имя пользователя" name="username" type="text" className="form-control" autoFocus />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
