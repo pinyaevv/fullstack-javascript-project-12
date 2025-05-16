@@ -51,7 +51,8 @@ export const SignupPage = () => {
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
             
             <div className="mb-3">
-              <Field placeholder="Имя пользователя" name="username" type="text" className="form-control" autoFocus />
+              <label class="form-label" for="username">Имя пользователя</label>
+              <Field placeholder={t('form.username')} name="username" type="text" className="form-control" autoFocus />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
