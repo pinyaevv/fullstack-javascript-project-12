@@ -21,6 +21,15 @@ export default function ChatPage() {
   const messages = useSelector((state) => state.messages.items);
 
   useEffect(() => {
+    if (channels.length > 0 && !currentChannel) {
+      const generalChannel = channels.find(c => c.name === 'general');
+      if (generalChannel) {
+        dispatch(setCurrentChannel(generalChannel));
+      }
+    }
+  }, [channels, currentChannel, dispatch]);
+
+  useEffect(() => {
     dispatch(fetchChannels());
     dispatch(fetchMessages());
   }, [dispatch]);

@@ -26,7 +26,8 @@ export const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) 
           </div>
           <ul className="list-unstyled">
               {channels.map((channel) => (
-                  <li 
+                  <li
+                      role="button"
                       key={channel.id} 
                       className={`d-flex justify-content-between align-items-center p-2 ${channel.id === currentChannel?.id ? 'active' : ''}`}
                       onClick={() => onChannelSelect(channel)}
