@@ -52,7 +52,7 @@ export const SignupPage = () => {
             
             <div className="mb-3">
               <label class="form-label" for="username">{t('form.username')}</label>
-              <Field placeholder={t('form.username')} name="username" type="text" className="form-control" autoFocus />
+              <Field placeholder={t('form.username')} name="username" type="text" className="form-control" />
               <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
