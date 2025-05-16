@@ -57,13 +57,13 @@ export const SignupPage = () => {
             </div>
 
             <div className="mb-3">
-              <label class="form-label" for="username">{t('form.password')}</label>
+              <label class="form-label" for="password">{t('form.password')}</label>
               <Field placeholder={t('form.password')} name="password" type="password" className="form-control" />
               <ErrorMessage name="password" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
-              <label class="form-label" for="username">{t('form.confirm_password')}</label>
+              <label class="form-label" for="confirmPassword">{t('form.confirm_password')}</label>
               <Field placeholder={t('form.confirm_password')} name="confirmPassword" type="password" className="form-control" />
               <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
             </div>
