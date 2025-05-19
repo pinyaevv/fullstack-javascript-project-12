@@ -12,7 +12,7 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
   const dispatch = useDispatch();
   const { items: channels = [] } = useSelector((state) => state.channels);
   const { t } = useTranslation();
-  const [setError] = useState(null);
+  const [error, setError] = useState(null);
 
   if (!channel) return null;
 
@@ -36,8 +36,8 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
         name: values.name,
       })).unwrap();
       onHide();
-    } catch (error) {
-      console.error(t('errors.renaming_error'), error);
+    } catch (err) {
+      console.error(t('errors.renaming_error'), err);
       setError(t('errors.renaming_error'));
     } finally {
       setSubmitting(false);
@@ -70,6 +70,7 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
                   className="text-danger mt-1"
                 />
               </div>
+              {error && <div className="text-danger mb-3">{error}</div>}
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={onHide}>

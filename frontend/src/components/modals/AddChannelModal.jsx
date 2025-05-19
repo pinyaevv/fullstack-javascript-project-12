@@ -1,9 +1,10 @@
-import { Modal, Form, Button } from 'react-bootstrap';
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Modal, Button } from 'react-bootstrap';
+import {
+  Formik, Form, Field, ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { hasProfanity } from '../../utils/profanityFilter.js';
 import { addChannel } from '../../app/features/channels/chanSlice.js';
@@ -12,7 +13,6 @@ const AddChannelModal = ({ show, onHide }) => {
   const dispatch = useDispatch();
   const { items: channels = [] } = useSelector((state) => state.channels);
   const { t } = useTranslation();
-  const [setError] = useState(null);
 
   const schema = Yup.object().shape({
     name: Yup.string()
@@ -27,11 +27,8 @@ const AddChannelModal = ({ show, onHide }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm, setFieldError }) => {
-    setError(null);
-
     if (hasProfanity(values.name)) {
       toast.error(t('profanity.has_profanity'));
-      setError(t('profanity.has_profanity'));
       setFieldError('name', t('profanity.has_profanity'));
       setSubmitting(false);
       return;
@@ -42,9 +39,7 @@ const AddChannelModal = ({ show, onHide }) => {
       resetForm();
       onHide();
     } catch (error) {
-      console.error(t('errors.network_error'), error);
-      setError(t('errors.network_error'));
-      setFieldError('name', error);
+      setFieldError('name', t('errors.network_error'));
     } finally {
       setSubmitting(false);
     }
@@ -58,7 +53,7 @@ const AddChannelModal = ({ show, onHide }) => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <Modal.Header closeButton>
               <Modal.Title>{t('modal_window.create_channel')}</Modal.Title>
             </Modal.Header>
@@ -66,7 +61,7 @@ const AddChannelModal = ({ show, onHide }) => {
               <Field
                 name="name"
                 type="text"
-                className="form-control mb-2"
+                className="form-control"
                 placeholder={t('modal_window.channel_name')}
                 autoFocus
               />
@@ -76,12 +71,8 @@ const AddChannelModal = ({ show, onHide }) => {
               <Button variant="secondary" onClick={onHide}>
                 {t('ui_interface.cancel')}
               </Button>
-              <Button
-                type="submit"
-                variant="primary"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? `${t('ui_interface.create')}...` : `${t('ui_interface.create')}`}
+              <Button type="submit" variant="primary" disabled={isSubmitting}>
+                {isSubmitting ? `${t('ui_interface.create')}...` : t('ui_interface.create')}
               </Button>
             </Modal.Footer>
           </Form>

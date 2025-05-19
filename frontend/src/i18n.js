@@ -71,7 +71,7 @@ const resources = {
         rename_channel: 'Переименовать канал',
         delete_channel: 'Удалить канал',
         delete_channel_confirmation: 'Вы уверены, что хотите удалить канал?',
-        create_channel: 'Создать канал',
+        create_channel: 'Имя канала',
       },
 
       errors: {

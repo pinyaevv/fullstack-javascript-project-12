@@ -93,6 +93,25 @@ const channelsSlice = createSlice({
   initialState,
   reducers: {
     setCurrentChannel: setCurrentChannelReducer,
+    addChannelFromSocket: (state, action) => {
+      const exists = state.items.find((chan) => chan.id === action.payload.id);
+      if (!exists) {
+        state.items.push(action.payload);
+      }
+    },
+    removeChannelFromSocket: (state, action) => {
+      const channelId = action.payload;
+      state.items = state.items.filter((chan) => chan.id !== channelId);
+      if (state.currentChannel?.id === channelId) {
+        state.currentChannel = state.items[0] || null;
+      }
+    },
+    renameChannelFromSocket: (state, action) => {
+      const updatedChannel = action.payload;
+      state.items = state.items.map((chan) => (
+        chan.id === updatedChannel.id ? { ...chan, name: updatedChannel.name } : chan
+      ));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -112,7 +131,6 @@ const channelsSlice = createSlice({
       }))
       .addCase(addChannel.fulfilled, (state, action) => ({
         ...state,
-        items: [...state.items, action.payload],
         currentChannel: action.payload,
       }))
       .addCase(renameChannel.fulfilled, (state, action) => ({
@@ -135,5 +153,11 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setCurrentChannel } = channelsSlice.actions;
+export const {
+  setCurrentChannel,
+  addChannelFromSocket,
+  removeChannelFromSocket,
+  renameChannelFromSocket,
+} = channelsSlice.actions;
+
 export default channelsSlice.reducer;

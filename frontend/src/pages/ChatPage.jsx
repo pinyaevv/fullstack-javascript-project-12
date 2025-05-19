@@ -6,7 +6,13 @@ import { getSocket } from '../services/socket.js';
 import {
   addMessage, sendMessage, removeMessage, fetchMessages,
 } from '../app/features/messages/messSlice.js';
-import { fetchChannels, setCurrentChannel } from '../app/features/channels/chanSlice.js';
+import {
+  setCurrentChannel,
+  fetchChannels,
+  addChannelFromSocket,
+  removeChannelFromSocket,
+  renameChannelFromSocket,
+} from '../app/features/channels/chanSlice.js';
 import ChannelList from '../components/ChannelList.jsx';
 
 const ChatPage = () => {
@@ -50,15 +56,15 @@ const ChatPage = () => {
     };
 
     const handleNewChannel = (channel) => {
-      console.log('New channel received:', channel);
+      dispatch(addChannelFromSocket(channel));
     };
 
     const handleChannelRenamed = (updatedChannel) => {
-      console.log('WS: Channel renamed', updatedChannel);
+      dispatch(renameChannelFromSocket(updatedChannel));
     };
 
     const handleChannelRemoved = (channelId) => {
-      console.log('Channel removed:', channelId);
+      dispatch(removeChannelFromSocket(channelId));
     };
 
     socket.on('newMessage', handleNewMessage);

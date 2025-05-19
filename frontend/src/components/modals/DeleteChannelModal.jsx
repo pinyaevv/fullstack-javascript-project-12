@@ -7,7 +7,7 @@ import { removeChannel } from '../../app/features/channels/chanSlice.js';
 const DeleteChannelModal = ({ show, onHide, channel }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [setError] = useState(null);
+  const [error, setError] = useState(null);
 
   if (!channel?.id) return null;
 
@@ -21,8 +21,8 @@ const DeleteChannelModal = ({ show, onHide, channel }) => {
     try {
       await dispatch(removeChannel(channel.id)).unwrap();
       onHide();
-    } catch (error) {
-      console.error(t('errors.error'), error);
+    } catch (err) {
+      console.error(t('errors.error'), err);
       setError(t('errors.delete_error'));
     }
   };
@@ -38,7 +38,10 @@ const DeleteChannelModal = ({ show, onHide, channel }) => {
           &quot;?
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{t('modal_window.delete_channel_confirmation')}</Modal.Body>
+      <Modal.Body>
+        {t('modal_window.delete_channel_confirmation')}
+        {error && <div className="text-danger mb-3">{error}</div>}
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>{t('ui_interface.cancel')}</Button>
         <Button variant="danger" onClick={handleDelete} disabled={!channel?.id}>{t('ui_interface.delete')}</Button>
