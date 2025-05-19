@@ -56,6 +56,7 @@ const resources = {
       },
 
       validation: {
+        incorrect_name_or_pas: 'Неверные имя пользователя или пароль',
         required_field: 'Обязательное поле',
         min_3_max_20: 'От 3 до 20 символов',
         min_3: 'Не менее 3 символов',

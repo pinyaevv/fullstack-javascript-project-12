@@ -27,10 +27,10 @@ const LoginPage = () => {
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, t('validation.min_3'))
-      .required(t('validation.required_field')),
+      .required(t('validation.incorrect_name_or_pas')),
     password: Yup.string()
       .min(3, t('validation.min_3'))
-      .required(t('validation.required_field')),
+      .required(t('validation.incorrect_name_or_pas')),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
