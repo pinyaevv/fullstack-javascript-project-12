@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { hasProfanity } from '../../utils/profanityFilter.js';
+import { hasProfanity, filterProfanity } from '../../utils/profanityFilter.js';
 import { addChannel } from '../../app/features/channels/chanSlice.js';
 
 const AddChannelModal = ({ show, onHide }) => {
@@ -27,10 +27,18 @@ const AddChannelModal = ({ show, onHide }) => {
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm, setFieldError }) => {
+    const cleanName = filterProfanity(values.name);
+
     if (hasProfanity(values.name)) {
-      toast.error(t('profanity.has_profanity'));
-      setFieldError('name', t('profanity.has_profanity'));
-      setSubmitting(false);
+      try {
+        await dispatch(addChannel(cleanName)).unwrap();
+        onHide();
+      } catch (error) {
+        toast.error(t('errors.network'));
+        setFieldError('name', t('errors.network'));
+      } finally {
+        setSubmitting(false);
+      }
       return;
     }
 
