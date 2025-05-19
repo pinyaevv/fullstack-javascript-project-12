@@ -3,8 +3,6 @@ import axios from 'axios';
 
 const API_URL = '/api/v1';
 
-const getErrorMessage = (error, t) => error?.response?.data?.message || t('errors.incorrect_login_or_password');
-
 const showAuthError = (t) => () => toast.error(t('notify.auth_error'));
 
 const logError = (message) => (error) => console.error(message, error);
@@ -23,7 +21,7 @@ export const login = async (username, password, t) => {
   } catch (error) {
     showAuthError(t)();
     logError('Auth error:')(error);
-    throw new Error(getErrorMessage(error, t));
+    throw error;
   }
 };
 

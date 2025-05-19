@@ -43,9 +43,11 @@ const LoginPage = () => {
       localStorage.setItem('token', token);
       navigate('/', { replace: true });
     } catch (err) {
-      setError(err?.response?.status === 401
-        ? t('errors.incorrect_login_or_password')
-        : t('errors.network_error'));
+      if (err?.response && err.response.status === 401) {
+        setError(t('errors.incorrect_login_or_password'));
+      } else {
+        setError(t('errors.network_error'));
+      }
     } finally {
       setSubmitting(false);
     }
