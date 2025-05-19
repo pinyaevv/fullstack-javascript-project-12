@@ -1,17 +1,18 @@
-import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import {
+  Formik, Field, Form, ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { renameChannel } from '../../app/features/channels/chanSlice.js';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { renameChannel } from '../../app/features/channels/chanSlice.js';
 
-export const RenameChannelModal = ({ show, onHide, channel }) => {
+const RenameChannelModal = ({ show, onHide, channel }) => {
   const dispatch = useDispatch();
   const { items: channels = [] } = useSelector((state) => state.channels);
   const { t } = useTranslation();
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
 
   if (!channel) return null;
 
@@ -23,7 +24,7 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
       .test(
         'unique-name',
         t('validation.channel_exists'),
-        (name) => !channels.some((ch) => ch.name === name && ch.id !== channel.id)
+        (name) => !channels.some((ch) => ch.name === name && ch.id !== channel.id),
       ),
   });
 
@@ -31,8 +32,8 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
     setError(null);
     try {
       await dispatch(renameChannel({
-        id: channel.id, 
-        name: values.name
+        id: channel.id,
+        name: values.name,
       })).unwrap();
       onHide();
     } catch (error) {
@@ -88,3 +89,5 @@ export const RenameChannelModal = ({ show, onHide, channel }) => {
     </Modal>
   );
 };
+
+export default RenameChannelModal;

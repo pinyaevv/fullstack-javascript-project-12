@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-export default function NotFoundPage() {
+const NotFoundPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -12,3 +11,5 @@ export default function NotFoundPage() {
     </div>
   );
 };
+
+export default NotFoundPage;

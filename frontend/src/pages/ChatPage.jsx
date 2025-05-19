@@ -1,20 +1,22 @@
 import '../index.css';
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSocket } from '../services/socket.js';
-import { addMessage, sendMessage, removeMessage, fetchMessages } from '../app/features/messages/messSlice.js';
-import { fetchChannels, setCurrentChannel } from '../app/features/channels/chanSlice.js';
-import { ChannelList } from '../components/ChannelList.jsx';
 import { useTranslation } from 'react-i18next';
+import { getSocket } from '../services/socket.js';
+import {
+  addMessage, sendMessage, removeMessage, fetchMessages,
+} from '../app/features/messages/messSlice.js';
+import { fetchChannels, setCurrentChannel } from '../app/features/channels/chanSlice.js';
+import ChannelList from '../components/ChannelList.jsx';
 
-export default function ChatPage() {
+const ChatPage = () => {
   const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
   const socket = getSocket();
   const { t } = useTranslation();
 
-  const { 
-    items: channels = [], 
+  const {
+    items: channels = [],
     currentChannel,
   } = useSelector((state) => state.channels);
 
@@ -22,7 +24,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (channels.length > 0 && !currentChannel) {
-      const generalChannel = channels.find(c => c.name === 'general');
+      const generalChannel = channels.find((c) => c.name === 'general');
       if (generalChannel) {
         dispatch(setCurrentChannel(generalChannel));
       }
@@ -80,17 +82,17 @@ export default function ChatPage() {
 
   const handleChannelSelect = useCallback(
     (channel) => dispatch(setCurrentChannel(channel)),
-    [dispatch]
+    [dispatch],
   );
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!messageText.trim() || !currentChannel) return;
-    
+
     try {
       await dispatch(sendMessage({
         channelId: currentChannel.id,
-        body: messageText
+        body: messageText,
       })).unwrap();
       setMessageText('');
     } catch (err) {
@@ -103,7 +105,7 @@ export default function ChatPage() {
       {/* Колонка с каналами (слева) */}
       <div className="channels-sidebar">
         <div className="d-flex flex-column h-100">
-          <ChannelList 
+          <ChannelList
             channels={channels}
             currentChannel={currentChannel}
             onChannelSelect={handleChannelSelect}
@@ -115,19 +117,26 @@ export default function ChatPage() {
       <div className="chat-main">
         {/* Заголовок с именем канала */}
         <div className="p-3 border-bottom">
-          <h4>#{currentChannel?.name || t('ui_interface.no_channel_selected')}</h4>
+          <h4>
+            #
+            {currentChannel?.name || t('ui_interface.no_channel_selected')}
+          </h4>
         </div>
 
         {/* Список сообщений */}
         <div className="messages-container">
           {messages
-            .filter(msg => msg.channelId === currentChannel?.id)
+            .filter((msg) => msg.channelId === currentChannel?.id)
             .map((message) => (
               <div key={message.id} className="message">
-                <strong>{message.username}:</strong> {message.body}
+                <strong>
+                  {message.username}
+                  :
+                </strong>
+                {' '}
+                {message.body}
               </div>
-            ))
-          }
+            ))}
         </div>
 
         {/* Форма ввода сообщения */}
@@ -143,8 +152,8 @@ export default function ChatPage() {
                 placeholder={t('ui_interface.message_placeholder')}
                 disabled={!currentChannel}
               />
-              <button 
-                className="btn btn-primary" 
+              <button
+                className="btn btn-primary"
                 type="submit"
                 disabled={!currentChannel || !messageText.trim()}
               >
@@ -156,4 +165,6 @@ export default function ChatPage() {
       </div>
     </div>
   );
-}
+};
+
+export default ChatPage;

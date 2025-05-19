@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Header } from './components/Header.jsx';
+import { useSelector } from 'react-redux';
+import Header from './components/Header.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ChatPage from './pages/ChatPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
-import { SignupPage } from './pages/SignupPage.jsx';
-import { useSelector } from 'react-redux';
+import SignupPage from './pages/SignupPage.jsx';
 
-function App() {
+const App = () => {
   const { token } = useSelector((state) => state.auth);
-  
+
   return (
     <>
       <Header />
@@ -20,6 +20,6 @@ function App() {
       </Routes>
     </>
   );
-}
+};
 
 export default App;

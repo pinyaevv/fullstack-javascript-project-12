@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import i18n from '../../../i18n';
+import i18n from '../../../i18n.js';
 import { filterProfanity } from '../../../utils/profanityFilter';
 
 const notifyError = (msg) => () => toast.error(msg);

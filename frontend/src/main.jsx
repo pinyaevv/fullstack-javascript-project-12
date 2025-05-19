@@ -1,18 +1,17 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { verifyToken } from './api/auth.js';
-import { Provider as RollbarProvider, ErrorBoundary, useRollbar } from '@rollbar/react';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { Provider as ReduxProvider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
+import { ToastContainer, Bounce } from 'react-toastify';
+import { verifyToken } from './api/auth.js';
 import './index.css';
 import App from './App.jsx';
 import initializeStore from './app/store.js';
 import { createSocket } from './services/socket.js';
-import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n.js';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Bounce } from 'react-toastify';
 
 const store = initializeStore();
 createSocket(store);
@@ -29,23 +28,13 @@ const checkAuth = async () => {
     if (!isValid) {
       localStorage.removeItem('token');
 
-      const rollbar = window.Rollbar; // Тест
+      const rollbar = window.Rollbar;
       if (rollbar) {
         rollbar.warning('Invalid token detected and removed from localStorage');
       }
     }
   }
 };
-
-// const TestErrorButton = () => {
-//   const rollbar = useRollbar();
-
-//   const handleClick = () => {
-//     rollbar.error('Test Rollbar error from ChatSlack');
-//   };
-
-//   return <button onClick={handleClick}>🔥 Test Rollbar Error</button>;
-// };
 
 checkAuth().then(() => {
   createRoot(document.getElementById('root')).render(
@@ -56,7 +45,6 @@ checkAuth().then(() => {
             <I18nextProvider i18n={i18n}>
               <BrowserRouter>
                 <App />
-                {/* <TestErrorButton /> */}
                 <ToastContainer
                   position="top-left"
                   autoClose={5000}
@@ -75,7 +63,6 @@ checkAuth().then(() => {
           </ReduxProvider>
         </ErrorBoundary>
       </RollbarProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 });
-

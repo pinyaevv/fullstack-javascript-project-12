@@ -1,13 +1,14 @@
-import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import {
+  Formik, Field, Form, ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { signup } from '../app/features/auth/authSlice.js';
 import { Button, Container, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { signup } from '../app/features/auth/authSlice.js';
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ export const SignupPage = () => {
         {({ isSubmitting, errors }) => (
           <Form>
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
-            
+
             <div className="mb-3">
               <label className="form-label" htmlFor="username">{t('form.username')}</label>
               <Field id="username" placeholder={t('form.username')} name="username" type="text" className="form-control" />
@@ -73,7 +74,9 @@ export const SignupPage = () => {
             </Button>
 
             <div className="mt-3">
-              {t('auth.have_account')} <Link to="/login">{t('auth.login_link')}</Link>
+              {t('auth.have_account')}
+              {' '}
+              <Link to="/login">{t('auth.login_link')}</Link>
             </div>
           </Form>
         )}
@@ -81,3 +84,5 @@ export const SignupPage = () => {
     </Container>
   );
 };
+
+export default SignupPage;

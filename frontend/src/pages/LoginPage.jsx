@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import {
+  Formik, Field, Form, ErrorMessage,
+} from 'formik';
 import * as Yup from 'yup';
-import { login } from '../api/auth.js';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Alert } from 'react-bootstrap';
-import { setCredentials } from '../app/features/auth/authSlice.js';
 import { useTranslation } from 'react-i18next';
+import { setCredentials } from '../app/features/auth/authSlice.js';
+import { login } from '../api/auth.js';
 
-export default function LoginPage() {
+const LoginPage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,7 +37,7 @@ export default function LoginPage() {
     try {
       const token = await login(values.username, values.password, t);
       dispatch(setCredentials({
-        token: token,
+        token,
         username: values.username,
       }));
       localStorage.setItem('token', token);
@@ -52,7 +54,7 @@ export default function LoginPage() {
   return (
     <div>
       <h1>{t('ui_interface.login')}</h1>
-      {error && <Alert variant='danger'>{error}</Alert>}
+      {error && <Alert variant="danger">{error}</Alert>}
       <Formik
         initialValues={{ username: '', password: '' }}
         validationSchema={LoginSchema}
@@ -62,31 +64,33 @@ export default function LoginPage() {
       >
         {({ isSubmitting }) => (
           <>
-          <Form>
-            <div className="mb-3">
-              <Field
-                placeholder={t('form.username')}
-                name="username"
-                type="text"
-                className="form-control"
-                innerRef={usernameInput}
-                data-testid="username"
-                autoFocus
-              />
-              <ErrorMessage name="username" component="div" className="text-danger" />
-            </div>
+            <Form>
+              <div className="mb-3">
+                <Field
+                  placeholder={t('form.nickname')}
+                  name="username"
+                  type="text"
+                  className="form-control"
+                  innerRef={usernameInput}
+                  data-testid="username"
+                  autoFocus
+                />
+                <ErrorMessage name="username" component="div" className="text-danger" />
+              </div>
 
-            <div className="mb-3">
-              <Field name="password" type="password" className="form-control" placeholder={t('form.password')}/>
-              <ErrorMessage name="password" component="div" className="text-danger" />
-            </div>
+              <div className="mb-3">
+                <Field name="password" type="password" className="form-control" placeholder={t('form.password')} />
+                <ErrorMessage name="password" component="div" className="text-danger" />
+              </div>
 
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? `${t('ui_interface.login')}...` : `${t('ui_interface.login')}`}
-            </button>
-          </Form>
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? `${t('ui_interface.login')}...` : `${t('ui_interface.login')}`}
+              </button>
+            </Form>
             <div className="mt-3">
-              {t('auth.no_account')} <Link to="/signup">{t('auth.register')}</Link>
+              {t('auth.no_account')}
+              {' '}
+              <Link to="/signup">{t('auth.register')}</Link>
             </div>
           </>
         )}
@@ -94,3 +98,5 @@ export default function LoginPage() {
     </div>
   );
 };
+
+export default LoginPage;
