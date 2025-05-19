@@ -63,6 +63,7 @@ const AddChannelModal = ({ show, onHide }) => {
                 type="text"
                 className="form-control"
                 placeholder={t('modal_window.channel_name')}
+                aria-label={t('modal_window.channel_name')}
                 autoFocus
               />
               <ErrorMessage name="name" component="div" className="text-danger" />

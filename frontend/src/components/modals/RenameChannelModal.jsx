@@ -62,6 +62,8 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
                   name="name"
                   type="text"
                   className="form-control"
+                  placeholder={t('modal_window.channel_name')}
+                  aria-label={t('modal_window.channel_name')}
                   autoFocus
                 />
                 <ErrorMessage
