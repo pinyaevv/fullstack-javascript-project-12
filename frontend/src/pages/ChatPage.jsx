@@ -150,6 +150,7 @@ const ChatPage = () => {
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
                 placeholder={t('ui_interface.message_placeholder')}
+                aria-label={t('ui_interface.new_message')}
                 disabled={!currentChannel}
               />
               <button

@@ -46,6 +46,7 @@ const resources = {
         message_placeholder: 'Введите сообщение...',
         return_to_main: 'Вернуться на главную',
         send: 'Отправить',
+        new_message: 'Новое сообщение',
       },
 
       form: {
