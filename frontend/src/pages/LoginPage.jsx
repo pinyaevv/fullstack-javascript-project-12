@@ -68,6 +68,7 @@ const LoginPage = () => {
               <div className="mb-3">
                 <label htmlFor="username">{t('form.nickname')}</label>
                 <Field
+                  id="username"
                   placeholder={t('form.nickname')}
                   name="username"
                   type="text"
@@ -80,8 +81,8 @@ const LoginPage = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="username">{t('form.password')}</label>
-                <Field name="password" type="password" className="form-control" placeholder={t('form.password')} />
+                <label htmlFor="password">{t('form.password')}</label>
+                <Field id="password" name="password" type="password" className="form-control" placeholder={t('form.password')} />
                 <ErrorMessage name="password" component="div" className="text-danger" />
               </div>
 
