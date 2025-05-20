@@ -18,7 +18,7 @@ export const fetchChannels = createAsyncThunk(
         log(['fetchChannels response:', res.data])()
         return res.data
       })
-      .catch((err) => rejectWithValue(err.message))
+      .catch(err => rejectWithValue(err.message))
   },
 )
 

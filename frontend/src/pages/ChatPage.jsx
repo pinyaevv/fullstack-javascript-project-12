@@ -91,7 +91,7 @@ const ChatPage = () => {
     [dispatch],
   )
 
-  const handleSendMessage = async e => {
+  const handleSendMessage = async (e) => {
     e.preventDefault()
     if (!messageText.trim() || !currentChannel) return
 
