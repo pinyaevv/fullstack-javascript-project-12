@@ -25,7 +25,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
         </Button>
       </div>
       <ul className="list-unstyled">
-        {channels.map((channel) => (
+        {channels.map(channel => (
           <li
             key={channel.id}
             className={`d-flex align-items-center justify-content-between px-2 py-1 rounded mb-1 ${channel.id === currentChannel?.id ? 'bg-light' : ''}`}
@@ -44,7 +44,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
             </button>
 
             {channel.removable && (
-              <Dropdown onClick={(e) => e.stopPropagation()}>
+              <Dropdown onClick={e => e.stopPropagation()}>
                 <Dropdown.Toggle
                   variant="secondary"
                   size="sm"
@@ -56,7 +56,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
 
                 <Dropdown.Menu>
                   <Dropdown.Item
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation()
                       setSelectedChannel(channel)
                       setShowRenameModal(true)
@@ -65,7 +65,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
                     {t('ui_interface.rename')}
                   </Dropdown.Item>
                   <Dropdown.Item
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation()
                       setSelectedChannel(channel)
                       setShowDeleteModal(true)

@@ -1,3 +1,4 @@
+/* global process */
 import { io } from 'socket.io-client'
 
 const URL = process.env.NODE_ENV === 'production'
@@ -12,11 +13,11 @@ const initSocket = () => io(URL, {
   transports: ['websocket'],
 })
 
-const attachEvents = (socket) => {
+const attachEvents = socket => {
   const reconnect = () => socket.connect()
 
   socket.on('connect', () => console.log('WS: Connected'))
-  socket.on('disconnect', (reason) => (
+  socket.on('disconnect', reason => (
     reason === 'io server disconnect'
       ? reconnect()
       : console.log('WS: Disconnected', reason)

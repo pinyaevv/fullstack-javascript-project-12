@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import i18n from '../../../i18n.js'
 import { filterProfanity } from '../../../utils/profanityFilter'
 
-const notifyError = (msg) => () => toast.error(msg)
+const notifyError = msg => () => toast.error(msg)
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
@@ -13,8 +13,8 @@ export const fetchMessages = createAsyncThunk(
     return axios.get(`/api/v1/channels/${channelId}/messages`, {
       headers: { Authorization: `Bearer ${auth.token}` },
     })
-      .then((res) => res.data.filter((msg) => msg.channelId === channelId))
-      .catch((err) => rejectWithValue(err.message))
+      .then(res => res.data.filter(msg => msg.channelId === channelId))
+      .catch(err => rejectWithValue(err.message))
   },
 )
 
@@ -31,8 +31,8 @@ export const sendMessage = createAsyncThunk(
     }, {
       headers: { Authorization: `Bearer ${auth.token}` },
     })
-      .then((res) => res.data)
-      .catch((err) => {
+      .then(res => res.data)
+      .catch(err => {
         notifyError(i18n.t('errors.network_error'))()
         return rejectWithValue(err.message)
       })
@@ -55,12 +55,12 @@ const messagesSlice = createSlice({
     }),
     removeMessage: (state, action) => ({
       ...state,
-      items: state.items.filter((msg) => msg.id !== action.payload),
+      items: state.items.filter(msg => msg.id !== action.payload),
     }),
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(fetchMessages.pending, (state) => ({
+      .addCase(fetchMessages.pending, state => ({
         ...state,
         status: 'loading',
       }))

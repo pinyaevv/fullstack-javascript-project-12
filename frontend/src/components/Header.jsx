@@ -6,7 +6,7 @@ import { logout } from '../app/features/auth/authSlice.js'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { username } = useSelector((state) => state.auth)
+  const { username } = useSelector(state => state.auth)
   const { t } = useTranslation()
 
   return (

@@ -3,22 +3,22 @@ import axios from 'axios'
 import i18n from 'i18next'
 import { toast } from 'react-toastify'
 
-const showSuccessToast = (message) => () => toast.success(message)
-const showErrorToast = (message) => () => toast.error(message)
+const showSuccessToast = message => () => toast.success(message)
+const showErrorToast = message => () => toast.error(message)
 const setLocalStorage = (key, value) => () => localStorage.setItem(key, value)
-const removeLocalStorage = (key) => () => localStorage.removeItem(key)
+const removeLocalStorage = key => () => localStorage.removeItem(key)
 
-const getLocalStorage = (key) => localStorage.getItem(key) || null
+const getLocalStorage = key => localStorage.getItem(key) || null
 
 export const signup = createAsyncThunk(
   'auth/signup',
   ({ username, password }, { rejectWithValue }) => (
     axios.post('/api/v1/signup', { username, password })
-      .then((response) => {
+      .then(response => {
         showSuccessToast(i18n.t('notify.registration_success'))()
         return response.data
       })
-      .catch((error) => {
+      .catch(error => {
         const status = error?.response?.status
         const payload = status === 409
           ? { username: i18n.t('errors.user_exists') }
@@ -51,7 +51,7 @@ const authSlice = createSlice({
         username,
       }
     },
-    logout: (state) => {
+    logout: state => {
       removeLocalStorage('token')()
       removeLocalStorage('username')()
 
@@ -62,9 +62,9 @@ const authSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(signup.pending, (state) => ({
+      .addCase(signup.pending, state => ({
         ...state,
         status: 'loading',
         error: null,

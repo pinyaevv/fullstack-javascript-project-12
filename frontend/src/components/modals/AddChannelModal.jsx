@@ -11,7 +11,7 @@ import { addChannel } from '../../app/features/channels/chanSlice.js'
 
 const AddChannelModal = ({ show, onHide }) => {
   const dispatch = useDispatch()
-  const { items: channels = [] } = useSelector((state) => state.channels)
+  const { items: channels = [] } = useSelector(state => state.channels)
   const { t } = useTranslation()
 
   const schema = Yup.object().shape({
@@ -22,7 +22,7 @@ const AddChannelModal = ({ show, onHide }) => {
       .test(
         'unique-name',
         t('validation.channel_exists'),
-        (name) => !channels.some((chan) => chan.name === name),
+        name => !channels.some(chan => chan.name === name),
       ),
   })
 
