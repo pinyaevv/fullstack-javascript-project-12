@@ -11,7 +11,7 @@ import { addChannel } from '../../app/features/channels/chanSlice.js'
 
 const AddChannelModal = ({ show, onHide }) => {
   const dispatch = useDispatch()
-  const { items: channels = [] } = useSelector(state => state.channels)
+  const { items: channels = [] } = useSelector((state) => state.channels)
   const { t } = useTranslation()
 
   const schema = Yup.object().shape({
@@ -22,7 +22,7 @@ const AddChannelModal = ({ show, onHide }) => {
       .test(
         'unique-name',
         t('validation.channel_exists'),
-        name => !channels.some(chan => chan.name === name),
+        (name) => !channels.some((chan) => chan.name === name),
       ),
   })
 
@@ -35,7 +35,7 @@ const AddChannelModal = ({ show, onHide }) => {
         toast.warning(t('profanity.cleaned_name_warning'))
         onHide()
       }
-      catch (error) {
+      catch {
         toast.error(t('errors.network'))
         setFieldError('name', t('errors.network'))
       }
@@ -50,7 +50,7 @@ const AddChannelModal = ({ show, onHide }) => {
       resetForm()
       onHide()
     }
-    catch (error) {
+    catch {
       setFieldError('name', t('errors.network_error'))
     }
     finally {

@@ -16,6 +16,9 @@ parserOptions:
 plugins:
   - react
 
+globals:
+  process: readonly
+
 rules:
   import/extensions: 0
   import/no-unresolved: 0
@@ -40,7 +43,7 @@ rules:
       ignorePropertyModificationsFor:
         - state
   semi: [error, never]
-  arrow-parens: [error, as-needed]
+  arrow-parens: [error, always]
   brace-style: [error, stroustrup]
 
 overrides:

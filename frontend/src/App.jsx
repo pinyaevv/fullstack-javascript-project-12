@@ -7,7 +7,7 @@ import NotFoundPage from './pages/NotFoundPage.jsx'
 import SignupPage from './pages/SignupPage.jsx'
 
 const App = () => {
-  const { token } = useSelector(state => state.auth)
+  const { token } = useSelector((state) => state.auth)
 
   return (
     <>

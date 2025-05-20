@@ -6,7 +6,7 @@ import { logout } from '../app/features/auth/authSlice.js'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { username } = useSelector(state => state.auth)
+  const { username } = useSelector((state) => state.auth)
   const { t } = useTranslation()
 
   return (
@@ -18,17 +18,17 @@ const Header = () => {
 
         <div className="user-info d-flex align-items-center">
           {username && (
-          <>
-            <p className="username mb-0 me-3">{username}</p>
-            <Button
-              variant="outline-primary"
-              onClick={() => dispatch(logout())}
-              className="logout-btn"
-              aria-label="logout"
-            >
-              {t('ui_interface.logout')}
-            </Button>
-          </>
+            <>
+              <p className="username mb-0 me-3">{username}</p>
+              <Button
+                variant="outline-primary"
+                onClick={() => dispatch(logout())}
+                className="logout-btn"
+                aria-label="logout"
+              >
+                {t('ui_interface.logout')}
+              </Button>
+            </>
           )}
         </div>
       </Container>

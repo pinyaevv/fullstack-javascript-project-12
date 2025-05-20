@@ -10,7 +10,7 @@ import { renameChannel } from '../../app/features/channels/chanSlice.js'
 
 const RenameChannelModal = ({ show, onHide, channel }) => {
   const dispatch = useDispatch()
-  const { items: channels = [] } = useSelector(state => state.channels)
+  const { items: channels = [] } = useSelector((state) => state.channels)
   const { t } = useTranslation()
   const [error, setError] = useState(null)
 
@@ -24,7 +24,7 @@ const RenameChannelModal = ({ show, onHide, channel }) => {
       .test(
         'unique-name',
         t('validation.channel_exists'),
-        name => !channels.some(ch => ch.name === name && ch.id !== channel.id),
+        (name) => !channels.some((ch) => ch.name === name && ch.id !== channel.id),
       ),
   })
 

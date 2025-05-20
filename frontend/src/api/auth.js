@@ -3,9 +3,9 @@ import axios from 'axios'
 
 const API_URL = '/api/v1'
 
-const showAuthError = t => () => toast.error(t('notify.auth_error'))
+const showAuthError = (t) => () => toast.error(t('notify.auth_error'))
 
-const logError = message => error => console.error(message, error)
+const logError = (message) => (error) => console.error(message, error)
 
 const handleLoginResponse = (response, t) => {
   if (response?.data?.token) {
@@ -26,7 +26,7 @@ export const login = async (username, password, t) => {
   }
 }
 
-export const verifyToken = async token => {
+export const verifyToken = async (token) => {
   try {
     const response = await axios.get(`${API_URL}/channels`, {
       headers: { Authorization: `Bearer ${token}` },
