@@ -49,10 +49,9 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
                   variant="secondary"
                   size="sm"
                   className="border-0 bg-secondary-subtle"
-                  aria-label={t('ui_interface.channel_menu')}
-                  title={t('ui_interface.channel_menu')}
                 >
                   <i className="bi bi-chevron-down" />
+                  <span className="visually-hidden">{t('ui_interface.channel_menu')}</span>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
