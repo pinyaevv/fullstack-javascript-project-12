@@ -13,7 +13,7 @@ const initSocket = () => io(URL, {
   transports: ['websocket'],
 })
 
-const attachEvents = socket => {
+const attachEvents = (socket) => {
   const reconnect = () => socket.connect()
 
   socket.on('connect', () => console.log('WS: Connected'))

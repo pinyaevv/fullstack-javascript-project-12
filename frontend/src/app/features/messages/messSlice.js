@@ -32,7 +32,7 @@ export const sendMessage = createAsyncThunk(
       headers: { Authorization: `Bearer ${auth.token}` },
     })
       .then(res => res.data)
-      .catch(err => {
+      .catch((err) => {
         notifyError(i18n.t('errors.network_error'))()
         return rejectWithValue(err.message)
       })
@@ -58,7 +58,7 @@ const messagesSlice = createSlice({
       items: state.items.filter(msg => msg.id !== action.payload),
     }),
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
       .addCase(fetchMessages.pending, state => ({
         ...state,

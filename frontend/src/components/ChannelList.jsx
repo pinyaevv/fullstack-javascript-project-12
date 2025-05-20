@@ -56,7 +56,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
 
                 <Dropdown.Menu>
                   <Dropdown.Item
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation()
                       setSelectedChannel(channel)
                       setShowRenameModal(true)
@@ -65,7 +65,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
                     {t('ui_interface.rename')}
                   </Dropdown.Item>
                   <Dropdown.Item
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation()
                       setSelectedChannel(channel)
                       setShowDeleteModal(true)

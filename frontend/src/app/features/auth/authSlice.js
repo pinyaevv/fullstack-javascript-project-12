@@ -14,11 +14,11 @@ export const signup = createAsyncThunk(
   'auth/signup',
   ({ username, password }, { rejectWithValue }) => (
     axios.post('/api/v1/signup', { username, password })
-      .then(response => {
+      .then((response) => {
         showSuccessToast(i18n.t('notify.registration_success'))()
         return response.data
       })
-      .catch(error => {
+      .catch((error) => {
         const status = error?.response?.status
         const payload = status === 409
           ? { username: i18n.t('errors.user_exists') }
@@ -51,7 +51,7 @@ const authSlice = createSlice({
         username,
       }
     },
-    logout: state => {
+    logout: (state) => {
       removeLocalStorage('token')()
       removeLocalStorage('username')()
 
@@ -62,7 +62,7 @@ const authSlice = createSlice({
       }
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
       .addCase(signup.pending, state => ({
         ...state,

@@ -14,11 +14,11 @@ export const fetchChannels = createAsyncThunk(
     return axios.get('/api/v1/channels', {
       headers: { Authorization: `Bearer ${auth.token}` },
     })
-      .then(res => {
+      .then((res) => {
         log(['fetchChannels response:', res.data])()
         return res.data
       })
-      .catch(err => rejectWithValue(err.message))
+      .catch((err) => rejectWithValue(err.message))
   },
 )
 
@@ -29,11 +29,11 @@ export const addChannel = createAsyncThunk(
     return axios.post('/api/v1/channels', { name }, {
       headers: { Authorization: `Bearer ${auth.token}` },
     })
-      .then(res => {
+      .then((res) => {
         notifySuccess(i18n.t('notify.channel_added'))()
         return res.data
       })
-      .catch(err => {
+      .catch((err) => {
         notifyError(i18n.t('notify.channel_added_error'))()
         return rejectWithValue(err.message)
       })
@@ -51,7 +51,7 @@ export const removeChannel = createAsyncThunk(
         notifySuccess(i18n.t('notify.channel_removed'))()
         return channelId
       })
-      .catch(err => {
+      .catch((err) => {
         notifyError(i18n.t('notify.channel_renamed_error'))()
         return rejectWithValue(err.message)
       })
@@ -65,11 +65,11 @@ export const renameChannel = createAsyncThunk(
     return axios.patch(`/api/v1/channels/${id}`, { name }, {
       headers: { Authorization: `Bearer ${auth.token}` },
     })
-      .then(res => {
+      .then((res) => {
         notifySuccess(i18n.t('notify.channel_renamed'))()
         return res.data
       })
-      .catch(err => {
+      .catch((err) => {
         notifyError(i18n.t('notify.channel_removed_error'))()
         return rejectWithValue(err.message)
       })
@@ -113,7 +113,7 @@ const channelsSlice = createSlice({
       ))
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
       .addCase(fetchChannels.pending, state => ({
         ...state,

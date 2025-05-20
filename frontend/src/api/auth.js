@@ -26,7 +26,7 @@ export const login = async (username, password, t) => {
   }
 }
 
-export const verifyToken = async token => {
+export const verifyToken = async (token) => {
   try {
     const response = await axios.get(`${API_URL}/channels`, {
       headers: { Authorization: `Bearer ${token}` },

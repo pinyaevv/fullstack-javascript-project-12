@@ -42,11 +42,9 @@ rules:
     - props: true
       ignorePropertyModificationsFor:
         - state
-  arrow-parens:
-    - error
-    - as-needed
   semi: [error, never]
   brace-style: [error, stroustrup]
+  arrow-parens: off
 
 overrides:
   - files: ['vite.config.*']

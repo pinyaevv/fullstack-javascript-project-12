@@ -47,23 +47,23 @@ const ChatPage = () => {
       socket.connect()
     }
 
-    const handleNewMessage = message => {
+    const handleNewMessage = (message) => {
       dispatch(addMessage(message))
     }
 
-    const handleRemoveMessage = deletedMessage => {
+    const handleRemoveMessage = (deletedMessage) => {
       dispatch(removeMessage(deletedMessage.id))
     }
 
-    const handleNewChannel = channel => {
+    const handleNewChannel = (channel) => {
       dispatch(addChannelFromSocket(channel))
     }
 
-    const handleChannelRenamed = updatedChannel => {
+    const handleChannelRenamed = (updatedChannel) => {
       dispatch(renameChannelFromSocket(updatedChannel))
     }
 
-    const handleChannelRemoved = channelId => {
+    const handleChannelRemoved = (channelId) => {
       dispatch(removeChannelFromSocket(channelId))
     }
 
