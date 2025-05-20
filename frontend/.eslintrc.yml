@@ -39,6 +39,9 @@ rules:
     - props: true
       ignorePropertyModificationsFor:
         - state
+  semi: [error, never]
+  arrow-parens: [error, as-needed]
+  brace-style: [error, stroustrup]
 
 overrides:
   - files: ['vite.config.*']

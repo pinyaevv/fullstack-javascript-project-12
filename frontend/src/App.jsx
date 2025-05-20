@@ -1,13 +1,13 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import Header from './components/Header.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import ChatPage from './pages/ChatPage.jsx';
-import NotFoundPage from './pages/NotFoundPage.jsx';
-import SignupPage from './pages/SignupPage.jsx';
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import Header from './components/Header.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import ChatPage from './pages/ChatPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
+import SignupPage from './pages/SignupPage.jsx'
 
 const App = () => {
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector(state => state.auth)
 
   return (
     <>
@@ -19,7 +19,7 @@ const App = () => {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

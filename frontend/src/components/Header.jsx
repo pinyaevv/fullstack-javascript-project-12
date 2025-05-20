@@ -1,13 +1,13 @@
-import { Container, Navbar, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { logout } from '../app/features/auth/authSlice.js';
+import { Container, Navbar, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { logout } from '../app/features/auth/authSlice.js'
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const { username } = useSelector((state) => state.auth);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const { username } = useSelector(state => state.auth)
+  const { t } = useTranslation()
 
   return (
     <Navbar bg="light" variant="light" expand="lg" className="shadow-sm">
@@ -33,7 +33,7 @@ const Header = () => {
         </div>
       </Container>
     </Navbar>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

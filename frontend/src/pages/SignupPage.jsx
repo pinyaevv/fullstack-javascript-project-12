@@ -1,17 +1,17 @@
 import {
   Formik, Field, Form, ErrorMessage,
-} from 'formik';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
-import { Button, Container, Alert } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { signup } from '../app/features/auth/authSlice.js';
+} from 'formik'
+import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
+import { useNavigate, Link } from 'react-router-dom'
+import { Button, Container, Alert } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { signup } from '../app/features/auth/authSlice.js'
 
 const SignupPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -24,18 +24,20 @@ const SignupPage = () => {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], t('validation.passwords_must_match'))
       .required(t('validation.required_field')),
-  });
+  })
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await dispatch(signup(values)).unwrap();
-      navigate('/');
-    } catch (error) {
-      setErrors(error);
-    } finally {
-      setSubmitting(false);
+      await dispatch(signup(values)).unwrap()
+      navigate('/')
     }
-  };
+    catch (error) {
+      setErrors(error)
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <div className="auth-container">
@@ -84,7 +86,7 @@ const SignupPage = () => {
         </Formik>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default SignupPage;
+export default SignupPage

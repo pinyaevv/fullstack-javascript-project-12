@@ -1,31 +1,32 @@
-import { Modal, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { removeChannel } from '../../app/features/channels/chanSlice.js';
+import { Modal, Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import { removeChannel } from '../../app/features/channels/chanSlice.js'
 
 const DeleteChannelModal = ({ show, onHide, channel }) => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const [error, setError] = useState(null)
 
-  if (!channel?.id) return null;
+  if (!channel?.id) return null
 
   const handleDelete = async () => {
     if (!channel?.id) {
-      console.error(t('errors.channel_id_missing'));
-      return;
+      console.error(t('errors.channel_id_missing'))
+      return
     }
 
-    setError(null);
+    setError(null)
     try {
-      await dispatch(removeChannel(channel.id)).unwrap();
-      onHide();
-    } catch (err) {
-      console.error(t('errors.error'), err);
-      setError(t('errors.delete_error'));
+      await dispatch(removeChannel(channel.id)).unwrap()
+      onHide()
     }
-  };
+    catch (err) {
+      console.error(t('errors.error'), err)
+      setError(t('errors.delete_error'))
+    }
+  }
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -43,7 +44,7 @@ const DeleteChannelModal = ({ show, onHide, channel }) => {
         <Button variant="danger" onClick={handleDelete} disabled={!channel?.id}>{t('ui_interface.delete')}</Button>
       </Modal.Footer>
     </Modal>
-  );
-};
+  )
+}
 
-export default DeleteChannelModal;
+export default DeleteChannelModal

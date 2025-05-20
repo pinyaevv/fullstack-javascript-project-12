@@ -1,18 +1,18 @@
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap'
 import {
   Formik, Form, Field, ErrorMessage,
-} from 'formik';
-import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { hasProfanity, filterProfanity } from '../../utils/profanityFilter.js';
-import { addChannel } from '../../app/features/channels/chanSlice.js';
+} from 'formik'
+import * as Yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { hasProfanity, filterProfanity } from '../../utils/profanityFilter.js'
+import { addChannel } from '../../app/features/channels/chanSlice.js'
 
 const AddChannelModal = ({ show, onHide }) => {
-  const dispatch = useDispatch();
-  const { items: channels = [] } = useSelector((state) => state.channels);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const { items: channels = [] } = useSelector(state => state.channels)
+  const { t } = useTranslation()
 
   const schema = Yup.object().shape({
     name: Yup.string()
@@ -22,37 +22,41 @@ const AddChannelModal = ({ show, onHide }) => {
       .test(
         'unique-name',
         t('validation.channel_exists'),
-        (name) => !channels.some((chan) => chan.name === name),
+        name => !channels.some(chan => chan.name === name),
       ),
-  });
+  })
 
   const handleSubmit = async (values, { setSubmitting, resetForm, setFieldError }) => {
-    const cleanName = filterProfanity(values.name);
+    const cleanName = filterProfanity(values.name)
 
     if (hasProfanity(values.name)) {
       try {
-        await dispatch(addChannel(cleanName)).unwrap();
-        toast.warning(t('profanity.cleaned_name_warning'));
-        onHide();
-      } catch (error) {
-        toast.error(t('errors.network'));
-        setFieldError('name', t('errors.network'));
-      } finally {
-        setSubmitting(false);
+        await dispatch(addChannel(cleanName)).unwrap()
+        toast.warning(t('profanity.cleaned_name_warning'))
+        onHide()
       }
-      return;
+      catch (error) {
+        toast.error(t('errors.network'))
+        setFieldError('name', t('errors.network'))
+      }
+      finally {
+        setSubmitting(false)
+      }
+      return
     }
 
     try {
-      await dispatch(addChannel(values.name)).unwrap();
-      resetForm();
-      onHide();
-    } catch (error) {
-      setFieldError('name', t('errors.network_error'));
-    } finally {
-      setSubmitting(false);
+      await dispatch(addChannel(values.name)).unwrap()
+      resetForm()
+      onHide()
     }
-  };
+    catch (error) {
+      setFieldError('name', t('errors.network_error'))
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <Modal show={show} onHide={onHide} centered backdrop="static">
@@ -89,7 +93,7 @@ const AddChannelModal = ({ show, onHide }) => {
         )}
       </Formik>
     </Modal>
-  );
-};
+  )
+}
 
-export default AddChannelModal;
+export default AddChannelModal

@@ -1,16 +1,16 @@
-import { Dropdown, Button } from 'react-bootstrap';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import AddChannelModal from './modals/AddChannelModal.jsx';
-import DeleteChannelModal from './modals/DeleteChannelModal.jsx';
-import RenameChannelModal from './modals/RenameChannelModal.jsx';
+import { Dropdown, Button } from 'react-bootstrap'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import AddChannelModal from './modals/AddChannelModal.jsx'
+import DeleteChannelModal from './modals/DeleteChannelModal.jsx'
+import RenameChannelModal from './modals/RenameChannelModal.jsx'
 
 const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showRenameModal, setShowRenameModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedChannel, setSelectedChannel] = useState(null);
-  const { t } = useTranslation();
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [showRenameModal, setShowRenameModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [selectedChannel, setSelectedChannel] = useState(null)
+  const { t } = useTranslation()
 
   return (
     <div className="channels-sidebar">
@@ -25,7 +25,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
         </Button>
       </div>
       <ul className="list-unstyled">
-        {channels.map((channel) => (
+        {channels.map(channel => (
           <li
             key={channel.id}
             className={`d-flex align-items-center justify-content-between px-2 py-1 rounded mb-1 ${channel.id === currentChannel?.id ? 'bg-light' : ''}`}
@@ -44,7 +44,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
             </button>
 
             {channel.removable && (
-              <Dropdown onClick={(e) => e.stopPropagation()}>
+              <Dropdown onClick={e => e.stopPropagation()}>
                 <Dropdown.Toggle
                   variant="secondary"
                   size="sm"
@@ -56,19 +56,19 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
 
                 <Dropdown.Menu>
                   <Dropdown.Item
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedChannel(channel);
-                      setShowRenameModal(true);
+                    onClick={e => {
+                      e.stopPropagation()
+                      setSelectedChannel(channel)
+                      setShowRenameModal(true)
                     }}
                   >
                     {t('ui_interface.rename')}
                   </Dropdown.Item>
                   <Dropdown.Item
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedChannel(channel);
-                      setShowDeleteModal(true);
+                    onClick={e => {
+                      e.stopPropagation()
+                      setSelectedChannel(channel)
+                      setShowDeleteModal(true)
                     }}
                   >
                     {t('ui_interface.delete')}
@@ -87,21 +87,21 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
       <RenameChannelModal
         show={showRenameModal}
         onHide={() => {
-          setShowRenameModal(false);
-          setSelectedChannel(null);
+          setShowRenameModal(false)
+          setSelectedChannel(null)
         }}
         channel={selectedChannel}
       />
       <DeleteChannelModal
         show={showDeleteModal}
         onHide={() => {
-          setShowDeleteModal(false);
-          setSelectedChannel(null);
+          setShowDeleteModal(false)
+          setSelectedChannel(null)
         }}
         channel={selectedChannel}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ChannelList;
+export default ChannelList

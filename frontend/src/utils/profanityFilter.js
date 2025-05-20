@@ -1,11 +1,11 @@
-import * as leoProfanity from 'leo-profanity';
+import * as leoProfanity from 'leo-profanity'
 
 const loadDictionary = () => (leoProfanity.getDictionary().length === 0
   ? leoProfanity.loadDictionary('ru')
-  : null);
+  : null)
 
-loadDictionary();
+loadDictionary()
 
-export const filterProfanity = (text) => (text ? leoProfanity.clean(text) : text);
+export const filterProfanity = text => (text ? leoProfanity.clean(text) : text)
 
-export const hasProfanity = (text) => (text ? leoProfanity.check(text) : false);
+export const hasProfanity = text => (text ? leoProfanity.check(text) : false)
