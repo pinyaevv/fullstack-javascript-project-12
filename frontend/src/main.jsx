@@ -12,6 +12,7 @@ import initializeStore from './app/store.js';
 import { createSocket } from './services/socket.js';
 import i18n from './i18n.js';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const store = initializeStore();
 createSocket(store);

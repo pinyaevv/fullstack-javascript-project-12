@@ -32,6 +32,7 @@ const AddChannelModal = ({ show, onHide }) => {
     if (hasProfanity(values.name)) {
       try {
         await dispatch(addChannel(cleanName)).unwrap();
+        toast.warning(t('profanity.cleaned_name_warning'));
         onHide();
       } catch (error) {
         toast.error(t('errors.network'));

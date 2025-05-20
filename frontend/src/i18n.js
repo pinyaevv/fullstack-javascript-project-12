@@ -47,6 +47,7 @@ const resources = {
         return_to_main: 'Вернуться на главную',
         send: 'Отправить',
         new_message: 'Новое сообщение',
+        channel_menu: 'Управление каналом',
       },
 
       form: {
@@ -70,7 +71,7 @@ const resources = {
         channel_name: 'Имя канала',
         rename_channel: 'Переименовать канал',
         delete_channel: 'Удалить канал',
-        delete_channel_confirmation: 'Вы уверены, что хотите удалить канал?',
+        delete_channel_confirmation: 'Уверены?',
         create_channel: 'Имя канала',
       },
 

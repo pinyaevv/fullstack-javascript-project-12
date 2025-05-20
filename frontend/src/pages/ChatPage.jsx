@@ -108,7 +108,6 @@ const ChatPage = () => {
 
   return (
     <div className="chat-layout">
-      {/* Колонка с каналами (слева) */}
       <div className="channels-sidebar">
         <div className="d-flex flex-column h-100">
           <ChannelList
@@ -119,9 +118,7 @@ const ChatPage = () => {
         </div>
       </div>
 
-      {/* Колонка с чатом (справа) */}
       <div className="chat-main">
-        {/* Заголовок с именем канала */}
         <div className="p-3 border-bottom">
           <h4>
             #
@@ -129,7 +126,6 @@ const ChatPage = () => {
           </h4>
         </div>
 
-        {/* Список сообщений */}
         <div className="messages-container">
           {messages
             .filter((msg) => msg.channelId === currentChannel?.id)
@@ -145,7 +141,6 @@ const ChatPage = () => {
             ))}
         </div>
 
-        {/* Форма ввода сообщения */}
         <div className="message-input">
           <form onSubmit={handleSendMessage}>
             <div className="input-group">

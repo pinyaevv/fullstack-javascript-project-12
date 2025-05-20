@@ -38,50 +38,52 @@ const SignupPage = () => {
   };
 
   return (
-    <Container className="mt-5" style={{ maxWidth: '400px' }}>
-      <h2 className="mb-4">{t('ui_interface.signup')}</h2>
-      <Formik
-        initialValues={{ username: '', password: '', confirmPassword: '' }}
-        validationSchema={SignupSchema}
-        onSubmit={handleSubmit}
-        validateOnBlur={false}
-        validateOnChange={false}
-      >
-        {({ isSubmitting, errors }) => (
-          <Form>
-            {errors.general && <Alert variant="danger">{errors.general}</Alert>}
+    <div className="auth-container">
+      <Container className="mt-5" style={{ maxWidth: '400px' }}>
+        <h2 className="mb-4">{t('ui_interface.signup')}</h2>
+        <Formik
+          initialValues={{ username: '', password: '', confirmPassword: '' }}
+          validationSchema={SignupSchema}
+          onSubmit={handleSubmit}
+          validateOnBlur={false}
+          validateOnChange={false}
+        >
+          {({ isSubmitting, errors }) => (
+            <Form>
+              {errors.general && <Alert variant="danger">{errors.general}</Alert>}
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="username">{t('form.username')}</label>
-              <Field id="username" placeholder={t('form.username')} name="username" type="text" className="form-control" />
-              <ErrorMessage name="username" component="div" className="text-danger" />
-            </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="username">{t('form.username')}</label>
+                <Field id="username" placeholder={t('form.username')} name="username" type="text" className="form-control" />
+                <ErrorMessage name="username" component="div" className="text-danger" />
+              </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="password">{t('form.password')}</label>
-              <Field id="password" placeholder={t('form.password')} name="password" type="password" className="form-control" />
-              <ErrorMessage name="password" component="div" className="text-danger" />
-            </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="password">{t('form.password')}</label>
+                <Field id="password" placeholder={t('form.password')} name="password" type="password" className="form-control" />
+                <ErrorMessage name="password" component="div" className="text-danger" />
+              </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="confirmPassword">{t('form.confirm_password')}</label>
-              <Field id="confirmPassword" placeholder={t('form.confirm_password')} name="confirmPassword" type="password" className="form-control" />
-              <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
-            </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="confirmPassword">{t('form.confirm_password')}</label>
+                <Field id="confirmPassword" placeholder={t('form.confirm_password')} name="confirmPassword" type="password" className="form-control" />
+                <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
+              </div>
 
-            <Button type="submit" variant="primary" disabled={isSubmitting}>
-              {isSubmitting ? `${t('ui_interface.signup')}...` : `${t('ui_interface.signup')}`}
-            </Button>
+              <Button type="submit" variant="primary" disabled={isSubmitting}>
+                {isSubmitting ? `${t('ui_interface.signup')}...` : `${t('ui_interface.signup')}`}
+              </Button>
 
-            <div className="mt-3">
-              {t('auth.have_account')}
-              {' '}
-              <Link to="/login">{t('auth.login_link')}</Link>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </Container>
+              <div className="mt-3">
+                {t('auth.have_account')}
+                {' '}
+                <Link to="/login">{t('auth.login_link')}</Link>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Container>
+    </div>
   );
 };
 

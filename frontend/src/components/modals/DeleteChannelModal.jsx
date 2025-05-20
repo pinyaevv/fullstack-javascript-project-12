@@ -32,10 +32,6 @@ const DeleteChannelModal = ({ show, onHide, channel }) => {
       <Modal.Header closeButton>
         <Modal.Title>
           {t('modal_window.delete_channel')}
-          {' '}
-          &quot;
-          {channel?.name}
-          &quot;?
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

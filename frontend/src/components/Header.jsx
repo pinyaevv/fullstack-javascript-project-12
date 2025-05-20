@@ -11,28 +11,26 @@ const Header = () => {
 
   return (
     <Navbar bg="light" variant="light" expand="lg" className="shadow-sm">
-      <Container fluid="md">
+      <Container fluid className="d-flex justify-content-between align-items-center">
         <Navbar.Brand as={Link} to="/" className="me-3">
           Hexlet Chat
         </Navbar.Brand>
 
-        <Navbar.Collapse id="basic-navbar-nav">
-          <div className="user-info ms-auto">
-            {username && (
-              <>
-                <p className="username mb-0">{username}</p>
-                <Button
-                  variant="outline-primary"
-                  onClick={() => dispatch(logout())}
-                  className="logout-btn"
-                  aria-label="logout"
-                >
-                  {t('ui_interface.logout')}
-                </Button>
-              </>
-            )}
-          </div>
-        </Navbar.Collapse>
+        <div className="user-info d-flex align-items-center">
+          {username && (
+          <>
+            <p className="username mb-0 me-3">{username}</p>
+            <Button
+              variant="outline-primary"
+              onClick={() => dispatch(logout())}
+              className="logout-btn"
+              aria-label="logout"
+            >
+              {t('ui_interface.logout')}
+            </Button>
+          </>
+          )}
+        </div>
       </Container>
     </Navbar>
   );

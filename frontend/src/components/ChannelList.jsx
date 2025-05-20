@@ -26,55 +26,56 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
       </div>
       <ul className="list-unstyled">
         {channels.map((channel) => (
-          <li key={channel.id}>
+          <li
+            key={channel.id}
+            className={`d-flex align-items-center justify-content-between px-2 py-1 rounded mb-1 ${channel.id === currentChannel?.id ? 'bg-light' : ''}`}
+          >
             <button
               type="button"
-              className={`w-100 text-start p-2 d-flex justify-content-between align-items-center ${channel.id === currentChannel?.id ? 'active' : ''}`}
+              className="btn btn-link text-decoration-none text-start flex-grow-1 me-2"
               onClick={() => onChannelSelect(channel)}
+              style={{
+                color: '#000',
+                fontWeight: channel.id === currentChannel?.id ? 'bold' : 'normal',
+              }}
             >
-              {channel.name}
-            </button>
-            <span className="flex-grow-1 channel-name">
               #
               {channel.name}
-            </span>
+            </button>
 
             {channel.removable && (
-            <Dropdown onClick={(e) => e.stopPropagation()}>
-              <Dropdown.Toggle
-                variant="light"
-                size="sm"
-                className="p-1 channel-menu-toggle"
-                id={`dropdown-${channel.id}`}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <circle cx="12" cy="5" r="2" />
-                  <circle cx="12" cy="12" r="2" />
-                  <circle cx="12" cy="19" r="2" />
-                </svg>
-              </Dropdown.Toggle>
+              <Dropdown onClick={(e) => e.stopPropagation()}>
+                <Dropdown.Toggle
+                  variant="secondary"
+                  size="sm"
+                  className="border-0 bg-secondary-subtle"
+                  aria-label={t('ui_interface.channel_menu')}
+                  title={t('ui_interface.channel_menu')}
+                >
+                  <i className="bi bi-chevron-down" />
+                </Dropdown.Toggle>
 
-              <Dropdown.Menu className="dropdown-menu-up">
-                <Dropdown.Item
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedChannel(channel);
-                    setShowRenameModal(true);
-                  }}
-                >
-                  {t('ui_interface.rename')}
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedChannel(channel);
-                    setShowDeleteModal(true);
-                  }}
-                >
-                  {t('ui_interface.delete')}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedChannel(channel);
+                      setShowRenameModal(true);
+                    }}
+                  >
+                    {t('ui_interface.rename')}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedChannel(channel);
+                      setShowDeleteModal(true);
+                    }}
+                  >
+                    {t('ui_interface.delete')}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             )}
           </li>
         ))}

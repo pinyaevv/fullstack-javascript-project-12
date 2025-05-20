@@ -54,52 +54,63 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h1>{t('ui_interface.login')}</h1>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Formik
-        initialValues={{ username: '', password: '' }}
-        validationSchema={LoginSchema}
-        onSubmit={handleSubmit}
-        validateOnBlur={false}
-        validateOnChange={false}
-      >
-        {({ isSubmitting }) => (
-          <>
-            <Form>
-              <div className="mb-3">
-                <label htmlFor="username">{t('form.nickname')}</label>
-                <Field
-                  id="username"
-                  placeholder={t('form.nickname')}
-                  name="username"
-                  type="text"
-                  className="form-control"
-                  innerRef={usernameInput}
-                  data-testid="username"
-                  autoFocus
-                />
-                <ErrorMessage name="username" component="div" className="text-danger" />
-              </div>
+    <div className="auth-container">
+      <div className="w-100" style={{ maxWidth: '400px' }}>
+        <h1 className="text-center">{t('ui_interface.login')}</h1>
 
-              <div className="mb-3">
-                <label htmlFor="password">{t('form.password')}</label>
-                <Field id="password" name="password" type="password" className="form-control" placeholder={t('form.password')} />
-                <ErrorMessage name="password" component="div" className="text-danger" />
-              </div>
+        {error && <Alert variant="danger">{error}</Alert>}
 
-              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? `${t('ui_interface.login')}...` : `${t('ui_interface.login')}`}
-              </button>
-            </Form>
-            <div className="mt-3">
-              {t('auth.no_account')}
-              {' '}
-              <Link to="/signup">{t('auth.register')}</Link>
-            </div>
-          </>
-        )}
-      </Formik>
+        <Formik
+          initialValues={{ username: '', password: '' }}
+          validationSchema={LoginSchema}
+          onSubmit={handleSubmit}
+          validateOnBlur={false}
+          validateOnChange={false}
+        >
+          {({ isSubmitting }) => (
+            <>
+              <Form>
+                <div className="mb-3">
+                  <label htmlFor="username">{t('form.nickname')}</label>
+                  <Field
+                    id="username"
+                    placeholder={t('form.nickname')}
+                    name="username"
+                    type="text"
+                    className="form-control"
+                    innerRef={usernameInput}
+                    data-testid="username"
+                    autoFocus
+                  />
+                  <ErrorMessage name="username" component="div" className="text-danger" />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="password">{t('form.password')}</label>
+                  <Field
+                    id="password"
+                    name="password"
+                    type="password"
+                    className="form-control"
+                    placeholder={t('form.password')}
+                  />
+                  <ErrorMessage name="password" component="div" className="text-danger" />
+                </div>
+
+                <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>
+                  {isSubmitting ? `${t('ui_interface.login')}...` : `${t('ui_interface.login')}`}
+                </button>
+              </Form>
+
+              <div className="mt-3 text-center">
+                {t('auth.no_account')}
+                {' '}
+                <Link to="/signup">{t('auth.register')}</Link>
+              </div>
+            </>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };

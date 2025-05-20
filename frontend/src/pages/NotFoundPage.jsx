@@ -5,7 +5,7 @@ const NotFoundPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div>
+    <div className="auth-container">
       <h1>{t('errors.not_found_error')}</h1>
       <Link to="/">{t('ui_interface.return_to_main')}</Link>
     </div>
