@@ -18,7 +18,7 @@ const resources = {
 
         channel_added: 'Канал создан',
         channel_renamed: 'Канал переименован',
-        channel_removed: 'Канал удален',
+        channel_removed: 'Канал удалён',
 
         channel_added_error: 'Ошибка при создании канала',
         channel_renamed_error: 'Ошибка при переименовании канала',
