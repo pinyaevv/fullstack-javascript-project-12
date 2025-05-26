@@ -1,6 +1,6 @@
 const Messages = ({ messages, currentChannelId }) => {
   const filteredMessages = messages.filter(
-    (msg) => msg.channelId === currentChannelId,
+    msg => msg.channelId === currentChannelId,
   )
 
   return (

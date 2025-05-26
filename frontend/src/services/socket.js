@@ -1,4 +1,3 @@
-/* global process */
 import { io } from 'socket.io-client'
 
 const URL = process.env.NODE_ENV === 'production'

@@ -36,7 +36,7 @@ const ChatPage = () => {
     }
   }, [channels, currentChannel, dispatch])
 
-  const messages = useSelector((state) => state.messages.items)
+  const messages = useSelector(state => state.messages.items)
 
   useEffect(() => {
     dispatch(fetchChannels())
