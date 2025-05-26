@@ -38,3 +38,17 @@ export const verifyToken = async (token) => {
     return false
   }
 }
+
+export const checkAuth = async () => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    const isValid = await verifyToken(token)
+    if (!isValid) {
+      localStorage.removeItem('token')
+
+      if (window.Rollbar) {
+        window.Rollbar.warning('Invalid token detected and removed from localStorage')
+      }
+    }
+  }
+}

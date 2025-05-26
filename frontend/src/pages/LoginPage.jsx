@@ -52,7 +52,8 @@ const LoginPage = () => {
       }
     }
     finally {
-      setSubmitting(false)
+      setSubmitting(false) // Погуглил. Могу от этого избавитсья, если переписать на промисах.
+      // Есть ли смысл в этом?
     }
   }
 

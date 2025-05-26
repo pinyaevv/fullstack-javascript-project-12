@@ -1,16 +1,13 @@
 import { Dropdown, Button } from 'react-bootstrap'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import AddChannelModal from './modals/AddChannelModal.jsx'
-import DeleteChannelModal from './modals/DeleteChannelModal.jsx'
-import RenameChannelModal from './modals/RenameChannelModal.jsx'
+import ModalFacade from './ModalFacade'
 
 const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [showRenameModal, setShowRenameModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [selectedChannel, setSelectedChannel] = useState(null)
+  const [modal, setModal] = useState({ type: null, channel: null })
   const { t } = useTranslation()
+
+  const handleModalClose = () => setModal({ type: null, channel: null })
 
   return (
     <div className="channels-sidebar">
@@ -19,7 +16,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
         <Button
           variant="outline-primary"
           size="sm"
-          onClick={() => setShowAddModal(true)}
+          onClick={() => setModal({ type: 'add', channel: null })}
         >
           +
         </Button>
@@ -58,8 +55,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
                   <Dropdown.Item
                     onClick={(e) => {
                       e.stopPropagation()
-                      setSelectedChannel(channel)
-                      setShowRenameModal(true)
+                      setModal({ type: 'rename', channel })
                     }}
                   >
                     {t('ui_interface.rename')}
@@ -67,8 +63,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
                   <Dropdown.Item
                     onClick={(e) => {
                       e.stopPropagation()
-                      setSelectedChannel(channel)
-                      setShowDeleteModal(true)
+                      setModal({ type: 'delete', channel })
                     }}
                   >
                     {t('ui_interface.delete')}
@@ -80,26 +75,7 @@ const ChannelList = ({ channels = [], currentChannel, onChannelSelect }) => {
         ))}
       </ul>
 
-      <AddChannelModal
-        show={showAddModal}
-        onHide={() => setShowAddModal(false)}
-      />
-      <RenameChannelModal
-        show={showRenameModal}
-        onHide={() => {
-          setShowRenameModal(false)
-          setSelectedChannel(null)
-        }}
-        channel={selectedChannel}
-      />
-      <DeleteChannelModal
-        show={showDeleteModal}
-        onHide={() => {
-          setShowDeleteModal(false)
-          setSelectedChannel(null)
-        }}
-        channel={selectedChannel}
-      />
+      <ModalFacade modal={modal} onHide={handleModalClose} />
     </div>
   )
 }

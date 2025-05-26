@@ -1,5 +1,5 @@
 import '../index.css'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { getSocket } from '../services/socket.js'
@@ -14,10 +14,11 @@ import {
   renameChannelFromSocket,
 } from '../app/features/channels/chanSlice.js'
 import ChannelList from '../components/ChannelList.jsx'
+import Messages from '../components/Messages.jsx'
+import MessageForm from '../components/MessageForm.jsx'
 
 const ChatPage = () => {
   const dispatch = useDispatch()
-  const [messageText, setMessageText] = useState('')
   const socket = getSocket()
   const { t } = useTranslation()
 
@@ -25,8 +26,6 @@ const ChatPage = () => {
     items: channels = [],
     currentChannel,
   } = useSelector(state => state.channels)
-
-  const messages = useSelector(state => state.messages.items)
 
   useEffect(() => {
     if (channels.length > 0 && !currentChannel) {
@@ -36,6 +35,8 @@ const ChatPage = () => {
       }
     }
   }, [channels, currentChannel, dispatch])
+
+  const messages = useSelector((state) => state.messages.items)
 
   useEffect(() => {
     dispatch(fetchChannels())
@@ -91,8 +92,7 @@ const ChatPage = () => {
     [dispatch],
   )
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault()
+  const handleSendMessage = async (messageText) => {
     if (!messageText.trim() || !currentChannel) return
 
     try {
@@ -100,7 +100,6 @@ const ChatPage = () => {
         channelId: currentChannel.id,
         body: messageText,
       })).unwrap()
-      setMessageText('')
     }
     catch (err) {
       console.error(t('errors.network_error'), err)
@@ -126,44 +125,15 @@ const ChatPage = () => {
             {currentChannel?.name || t('ui_interface.no_channel_selected')}
           </h4>
         </div>
-
-        <div className="messages-container">
-          {messages
-            .filter(msg => msg.channelId === currentChannel?.id)
-            .map(message => (
-              <div key={message.id} className="message">
-                <strong>
-                  {message.username}
-                  :
-                </strong>
-                {' '}
-                {message.body}
-              </div>
-            ))}
-        </div>
-
+        <Messages
+          messages={messages}
+          currentChannelId={currentChannel?.id}
+        />
         <div className="message-input">
-          <form onSubmit={handleSendMessage}>
-            <div className="input-group">
-              <input
-                autoFocus
-                type="text"
-                className="form-control"
-                value={messageText}
-                onChange={e => setMessageText(e.target.value)}
-                placeholder={t('ui_interface.message_placeholder')}
-                aria-label={t('ui_interface.new_message')}
-                disabled={!currentChannel}
-              />
-              <button
-                className="btn btn-primary"
-                type="submit"
-                disabled={!currentChannel || !messageText.trim()}
-              >
-                {t('ui_interface.send')}
-              </button>
-            </div>
-          </form>
+          <MessageForm
+            onSendMessage={handleSendMessage}
+            disabled={!currentChannel}
+          />
         </div>
       </div>
     </div>
